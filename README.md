@@ -44,9 +44,9 @@ Vue.use(vueShapeImg)
 |rangeChange|if props timelyGetRange is true, this emit can return the range in timely|
 ##### tips: You can't use imageData directly,show it in canvas putImageData
 
-###Example
+### Example
   
-####in HTML:
+#### in HTML:
 
  <pre><code>
  &lt;div style="width: 500px;margin: 20px auto">
@@ -60,7 +60,7 @@ Vue.use(vueShapeImg)
               @imageDataChange="imageDataChange"  @rangeChange="rangeChange" ref="vueShapeImg"&gt;&lt;/vueShapeImg&gt;
   </code></pre>
   
-####in Methods:
+#### in Methods:
  
   <pre><code>
 rangeChange (obj) {
@@ -74,8 +74,9 @@ getImage () {
 },
  </code></pre>
 
-###Browser support
-#####IE10+, chrome, firefox or other modern Browser
+### Browser support
+
+##### IE10+, chrome, firefox or other modern Browser
 
 
 ## <a name="中文文档">中文文档</a> <a href="#english">English</a> 
@@ -117,9 +118,9 @@ Vue.use(vueShapeImg)
 |rangeChange|如果timelyGetRange为true,那么会及时返回用户选择的区域|
 ##### tips: imageDataChange返回的值可以通过 canvas的putImageData展示
 
-###举例
+### 举例
  
-####html里面:
+#### html里面:
   
  <pre><code>
  &lt;div style="width: 500px;margin: 20px auto">
@@ -133,7 +134,7 @@ Vue.use(vueShapeImg)
               @imageDataChange="imageDataChange"  @rangeChange="rangeChange" ref="vueShapeImg"&gt;&lt;/vueShapeImg&gt;
   </code></pre>
   
-####方法里面:
+#### 方法里面:
  
   <pre><code>
 rangeChange (obj) {
@@ -147,6 +148,6 @@ getImage () {
 },
  </code></pre>
 
-###浏览器支持情况
-#####IE10+, chrome, firefox 和其他现代浏览器
+### 浏览器支持情况
+##### IE10+, chrome, firefox 和其他现代浏览器
 
