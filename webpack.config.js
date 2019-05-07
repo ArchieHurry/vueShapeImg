@@ -12,7 +12,7 @@ module.exports = {
     umdNamedDefine: true,
     filename: 'vue-shape-img.js'
   },
-  module: {
+    module: {
     rules: [
       {
         test: /\.css$/,
@@ -52,7 +52,10 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     noInfo: true,
-    overlay: true
+    overlay: true,
+    clientLogLevel: 'warning',
+    hot: true,
+    inline: false
   },
   performance: {
     hints: false

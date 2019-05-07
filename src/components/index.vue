@@ -1,6 +1,16 @@
 <template>
   <div :id="`cropper${timeId}`">
-    <div class="cropper" :style="{ height: height + 'px', width: width + 'px' }">
+    <div class="vueShapeImg" :id="`vueShapeImg${timeId}`" :style="{ height: height + 'px', width: width + 'px' }">
+      <div class="borderDiv" v-if="useFrame" :style="{ width: w + 'px', height: h + 'px', top: y + 'px', left: x + 'px' }">
+        <div class="top" :style="{width: w + 'px', top: y + 'px', left: x + 'px' }"></div>
+        <div class="right" :style="{height: h + 'px', top: y + 'px', left: x + w  + 'px' }"></div>
+        <div class="bottom" :style="{width: w + 'px', top: y + h + 'px', left: x + 'px'}"></div>
+        <div class="left" :style="{height: h + 'px', top: y + 'px', left: x + 'px' }"></div>
+        <div class="topLeft" :style="{top: y + 'px', left: x + 'px'}"></div>
+        <div class="topRight" :style="{top: y + 'px', left: x + w + 'px'}"></div>
+        <div class="bottomLeft" :style="{top: y + h + 'px', left: x + 'px'}"></div>
+        <div class="bottomRight" :style="{top: y + h + 'px', left: x + w + 'px'}"></div>
+      </div>
       <canvas :id="`canvas${timeId}`" class="canvas"></canvas>
       <canvas :id="`canvas1${timeId}`" class="mask" v-show="mask"></canvas>
       <input type="file" ref="file" @change="_fileChange" v-show="false">
@@ -19,10 +29,26 @@ export default {
       maskObj: null,
       mask: false,
       maskCtx: null,
+      vueShapeImgDiv: null,
+      borderDiv: {
+        self: null,
+        t: null,
+        l: null,
+        r: null,
+        b: null,
+        tl: null,
+        tr: null,
+        bl: null,
+        br: null
+      },
       x: 0, y: 0, w: 0, h: 0
     }
   },
   props: {
+    useFrame: {
+      type: Boolean,
+      default: false
+    },
     height: {
       type: Number,
       default: 500
@@ -89,6 +115,20 @@ export default {
     },
     init () {
       let s = this;
+      s.vueShapeImgDiv = document.getElementById('vueShapeImg' + s.timeId)
+      if (s.useFrame) {
+        s.borderDiv.self = s.vueShapeImgDiv.getElementsByClassName('borderDiv')[0]
+        s.borderDiv.t = s.vueShapeImgDiv.getElementsByClassName('top')[0]
+        s.borderDiv.b = s.vueShapeImgDiv.getElementsByClassName('bottom')[0]
+        s.borderDiv.l = s.vueShapeImgDiv.getElementsByClassName('left')[0]
+        s.borderDiv.r = s.vueShapeImgDiv.getElementsByClassName('right')[0]
+        s.borderDiv.tl = s.vueShapeImgDiv.getElementsByClassName('topLeft')[0]
+        s.borderDiv.tr = s.vueShapeImgDiv.getElementsByClassName('topRight')[0]
+        s.borderDiv.bl = s.vueShapeImgDiv.getElementsByClassName('bottomLeft')[0]
+        s.borderDiv.br = s.vueShapeImgDiv.getElementsByClassName('bottomRight')[0]
+        console.log(s.borderDiv)
+      }
+
       s.maskObj = document.getElementById('canvas1' + s.timeId);
       s.maskCtx = s.maskObj.getContext('2d');
       s.canvasObj = document.getElementById('canvas' + s.timeId);
@@ -108,18 +148,31 @@ export default {
       s.maskCtx.fillRect(0,y,x, s.canvasObj.height - y);
       s.maskCtx.fillRect(x + w, y, s.canvasObj.width -x - w, s.canvasObj.height - y);
       s.maskCtx.fillRect(x, y + h, w, s.canvasObj.height - h - y);
+      s.maskCtx.strokeStyle = 'rgba(255,255,255, 0.8)';
+      s.maskCtx.strokeRect(x,y,w,h);
       s.x = x;s.y = y;s.h = h;s.w = w;
-      if (s.timelyGetRange) s.$emit('rangeChange', { x: x, y: y, w: w, h: h })
+      if (s.useFrame) {
+        s._drawFrame(x,y,w,h)
+      }
+      if (s.timelyGetRange) s.$emit('rangeChange', { x: x, y: y, w: w, h: h });
       if (s.timelyImageData) {
-        let timer = null
-        if (timer) return
+        let timer = null;
+        if (timer) return;
         timer = setTimeout(function () {
           try{ s.$emit('imageDataChange', s.ctx.getImageData(x, y, w, h)) }catch (e) {}
         }, 50)
       }
     },
-    _main (imgSrc) {
+    _drawFrame (x, y, w, h) {
       const s = this
+      s.borderDiv.t.width = w + 'px'
+      s.borderDiv.b.width = w + 'px'
+      s.borderDiv.l.height = h + 'px'
+      s.borderDiv.r.height = h + 'px'
+      console.log(x,y,w,h)
+    },
+    _main (imgSrc) {
+      const s = this;
       let img = new Image();
       img.crossorigin = '';
       img.onload = function () {
@@ -167,47 +220,14 @@ export default {
             }
           }
         };
-
         // 图片放大
-        // 火狐
-        s.canvasObj.addEventListener('DOMMouseScroll',function (e) {
+        let zoom = function (e) {
           if(e.preventDefault){
             e.preventDefault();
           }else{
             window.event.returnValue == false;
           }
-          if (s.mask) { // 出现遮罩层停止操作
-            return;
-          }
-          var delta = 0;
-          if (!event) event = window.event;
-          if (event.wheelDelta) {
-            delta = event.wheelDelta/120;
-            if (window.opera) delta = -delta;
-          } else if (event.detail) {
-            delta = -event.detail/3;
-          }
-          if (delta > 0) {
-            s.ctx.clearRect(0,0, s.canvasObj.width, s.canvasObj.height);
-            w += 10;
-            h += 10 * img.height / img.width;
-            s.ctx.drawImage(img,imgX, imgY, w, h);
-          }
-          if (delta < 0) {
-            s.ctx.clearRect(0,0, s.canvasObj.width, s.canvasObj.height);
-            w -= 10;
-            h -= 10 * img.height / img.width;
-            s.ctx.drawImage(img,imgX, imgY, w, h);
-          }
-        },false);
-        // 其他浏览器
-        s.canvasObj.onmousewheel = function (e) {
-          if(e.preventDefault){
-            e.preventDefault();
-          }else{
-            window.event.returnValue == false;
-          }
-          if (s.mask) { // 出现遮罩层停止操作
+          if (s.mask && !s.useFrame) { // 出现遮罩层停止操作
             return;
           }
           var delta = 0;
@@ -231,6 +251,10 @@ export default {
             s.ctx.drawImage(img,imgX, imgY, w, h);
           }
         }
+        // 火狐
+        s.vueShapeImgDiv.addEventListener('DOMMouseScroll',zoom,false);
+        // 其他浏览器
+        s.vueShapeImgDiv.onmousewheel = zoom
       }
       document.onmouseup = function () {
         s.canvasObj.onmousemove = null;
@@ -252,19 +276,64 @@ export default {
   }
 }
 </script>
-<style>
-  .cropper{
+<style lang="less">
+  .vueShapeImg{
     position: relative;
     margin: 0 auto;
     background-image: url("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/wAALCAAPAA8BAREA/8QAFwAAAwEAAAAAAAAAAAAAAAAABQcICf/EAB0QAAEDBQEAAAAAAAAAAAAAAAACBAUBFlWU0RL/2gAIAQEAAD8A1CuOJyjLYR0TNuyuKe66+A71Qog//9k=");
-  }
-  .cropper .mask{
-    position: absolute;
-    border: 1px solid rgba(79, 72, 65, 0.35);
-    top: 0;
-    left: 0;
-  }
-  .cropper .canvas{
-    border: 1px solid rgba(79, 72, 65, 0.35);
+    .mask{
+      position: absolute;
+      border: 1px solid rgba(79, 72, 65, 0.35);
+      top: 0;
+      left: 0;
+    }
+    .canvas{
+      border: 1px solid rgba(79, 72, 65, 0.35);
+    }
+    .borderDiv{
+      z-index: 500;
+      .top, .left, .right, .bottom{
+        z-index: 501;
+        display: block;
+        position: absolute;
+        background: red;
+      }
+      .top, .bottom{
+        height: 3px;
+        cursor: n-resize;
+      }
+      .left, .right{
+        cursor: w-resize;
+        width: 3px;
+      }
+      .topLeft, .topRight,.bottomLeft,.bottomRight{
+        z-index: 502;
+        display: block;
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: rgba(138, 43, 226, 0.45);
+      }
+      .topLeft{
+        top: 0;
+        left: 0;
+        cursor: se-resize;
+      }
+      .topRight{
+        top: 0;
+        right: 0;
+        cursor: ne-resize;
+      }
+      .bottomLeft{
+        bottom: 0;
+        left: 0;
+        cursor: ne-resize;
+      }
+      .bottomRight{
+        bottom: 0;
+        right: 0;
+        cursor: se-resize;
+      }
+    }
   }
 </style>
