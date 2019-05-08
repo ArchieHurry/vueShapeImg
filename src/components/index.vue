@@ -1,15 +1,17 @@
 <template>
   <div :id="`cropper${timeId}`">
     <div class="vueShapeImg" :id="`vueShapeImg${timeId}`" :style="{ height: height + 'px', width: width + 'px' }">
-      <div class="borderDiv" v-if="useFrame" :style="{ width: w + 'px', height: h + 'px', top: y + 'px', left: x + 'px' }">
-        <div class="top" :style="{width: w + 'px', top: y + 'px', left: x + 'px' }"></div>
-        <div class="right" :style="{height: h + 'px', top: y + 'px', left: x + w  + 'px' }"></div>
-        <div class="bottom" :style="{width: w + 'px', top: y + h + 'px', left: x + 'px'}"></div>
-        <div class="left" :style="{height: h + 'px', top: y + 'px', left: x + 'px' }"></div>
-        <div class="topLeft" :style="{top: y + 'px', left: x + 'px'}"></div>
-        <div class="topRight" :style="{top: y + 'px', left: x + w + 'px'}"></div>
-        <div class="bottomLeft" :style="{top: y + h + 'px', left: x + 'px'}"></div>
-        <div class="bottomRight" :style="{top: y + h + 'px', left: x + w + 'px'}"></div>
+      <div class="borderDiv" v-show="mask" v-if="useFrame">
+        <div class="center">
+          <div class="top" ></div>
+          <div class="right" ></div>
+          <div class="bottom" ></div>
+          <div class="left"></div>
+          <div class="topLeft"></div>
+          <div class="topRight"></div>
+          <div class="bottomLeft"></div>
+          <div class="bottomRight"></div>
+        </div>
       </div>
       <canvas :id="`canvas${timeId}`" class="canvas"></canvas>
       <canvas :id="`canvas1${timeId}`" class="mask" v-show="mask"></canvas>
@@ -30,18 +32,8 @@ export default {
       mask: false,
       maskCtx: null,
       vueShapeImgDiv: null,
-      borderDiv: {
-        self: null,
-        t: null,
-        l: null,
-        r: null,
-        b: null,
-        tl: null,
-        tr: null,
-        bl: null,
-        br: null
-      },
-      x: 0, y: 0, w: 0, h: 0
+      x: 0, y: 0, w: 0, h: 0,
+      center: null,
     }
   },
   props: {
@@ -56,6 +48,13 @@ export default {
     width: {
       type: Number,
       default: 500
+    },
+    initRange: {
+      type: Array,
+      default () {
+        let s = this
+        return [s.width * 0.25, s.height * 0.25, s.width * 0.5 ,s.height * 0.5]
+      }
     },
     timelyGetRange: {
       type: Boolean,
@@ -74,6 +73,11 @@ export default {
   },
   methods: {
     showMask () {
+      if (this.useFrame) {
+        this._drawMask(this.initRange[0], this.initRange[1], this.initRange[2], this.initRange[3])
+      } else {
+        this._drawMask(0,0,0,0)
+      }
       this.mask = true;
     },
     setImgSrc (imgSrc) {
@@ -117,16 +121,7 @@ export default {
       let s = this;
       s.vueShapeImgDiv = document.getElementById('vueShapeImg' + s.timeId)
       if (s.useFrame) {
-        s.borderDiv.self = s.vueShapeImgDiv.getElementsByClassName('borderDiv')[0]
-        s.borderDiv.t = s.vueShapeImgDiv.getElementsByClassName('top')[0]
-        s.borderDiv.b = s.vueShapeImgDiv.getElementsByClassName('bottom')[0]
-        s.borderDiv.l = s.vueShapeImgDiv.getElementsByClassName('left')[0]
-        s.borderDiv.r = s.vueShapeImgDiv.getElementsByClassName('right')[0]
-        s.borderDiv.tl = s.vueShapeImgDiv.getElementsByClassName('topLeft')[0]
-        s.borderDiv.tr = s.vueShapeImgDiv.getElementsByClassName('topRight')[0]
-        s.borderDiv.bl = s.vueShapeImgDiv.getElementsByClassName('bottomLeft')[0]
-        s.borderDiv.br = s.vueShapeImgDiv.getElementsByClassName('bottomRight')[0]
-        console.log(s.borderDiv)
+        s.center = s.vueShapeImgDiv.getElementsByClassName('center')[0]
       }
 
       s.maskObj = document.getElementById('canvas1' + s.timeId);
@@ -148,12 +143,17 @@ export default {
       s.maskCtx.fillRect(0,y,x, s.canvasObj.height - y);
       s.maskCtx.fillRect(x + w, y, s.canvasObj.width -x - w, s.canvasObj.height - y);
       s.maskCtx.fillRect(x, y + h, w, s.canvasObj.height - h - y);
-      s.maskCtx.strokeStyle = 'rgba(255,255,255, 0.8)';
-      s.maskCtx.strokeRect(x,y,w,h);
-      s.x = x;s.y = y;s.h = h;s.w = w;
-      if (s.useFrame) {
-        s._drawFrame(x,y,w,h)
+      if (!s.useFrame) {
+        s.maskCtx.strokeStyle = 'rgba(255,255,255, 0.8)';
+        s.maskCtx.strokeRect(x,y,w,h);
       }
+      if (s.useFrame) {
+        s.center.style.width = w + 'px';
+        s.center.style.height = h + 'px';
+        s.center.style.left = x + 'px';
+        s.center.style.top = y + 'px';
+      }
+      s.x = x;s.y = y;s.h = h;s.w = w;
       if (s.timelyGetRange) s.$emit('rangeChange', { x: x, y: y, w: w, h: h });
       if (s.timelyImageData) {
         let timer = null;
@@ -163,13 +163,31 @@ export default {
         }, 50)
       }
     },
-    _drawFrame (x, y, w, h) {
+    _zoomFrame (e) {
       const s = this
-      s.borderDiv.t.width = w + 'px'
-      s.borderDiv.b.width = w + 'px'
-      s.borderDiv.l.height = h + 'px'
-      s.borderDiv.r.height = h + 'px'
-      console.log(x,y,w,h)
+      const CN = e.target.className
+      let ox = 0, oy = 0, timer = null,x = 0, y = 0, w = 0, h = 0;
+      x = parseInt(s.center.style.left)
+      y = parseInt(s.center.style.top)
+      w = parseInt(s.center.style.width)
+      h = parseInt(s.center.style.height)
+      s.center.onmousemove = function (e) {
+        console.log(e.offsetX, e.offsetY)
+        if (!timer) {
+          timer = setTimeout(function () {
+            ox = e.offsetX - x
+            oy = e.offsetY - y
+            if (CN === 'top') {
+              s._drawMask(x, y + oy / 2, w, h - oy / 2)
+            }
+            timer = null
+            x = parseInt(s.center.style.left)
+            y = parseInt(s.center.style.top)
+            w = parseInt(s.center.style.width)
+            h = parseInt(s.center.style.height)
+          }, 17)
+        }
+      }
     },
     _main (imgSrc) {
       const s = this;
@@ -185,20 +203,51 @@ export default {
         s.ctx.clearRect(0, 0, s.canvasObj.width, s.canvasObj.height);
         s.ctx.drawImage(img, left, top, w, h);
         let imgX = 0, imgY = top;
+
         // 遮罩层绘制
-        s.maskObj.onmousedown = function(e) {
-          let timer = null;
-          if (s.mask) { // 出现遮罩层停止操作
+        if (s.useFrame) {
+          s.showMask()
+          s.center.onmousedown = function(e) {
+            if (e.target.className !== 'center') {
+              s._zoomFrame(e)
+              return
+            }
+            s.center.onmousemove = null
             let ox = e.offsetX || e.layerX;
             let oy = e.offsetY || e.offsetY;
-            s.maskObj.onmousemove = function (e) {
+            let ofx = s.x - ox + (e.offsetX || e.layerX)
+            let ofy = s.y - oy + (e.offsetY || e.layerY)
+            let timer = null;
+            s.center.onmousemove = function (e) {
               if (!timer) {
                 timer = setTimeout(function () {
-                  s._drawMask(ox, oy, (e.offsetX || e.layerX) - ox, (e.offsetY || e.layerY) - oy)
+                  ofx = ofx - ox + (e.offsetX || e.layerX)
+                  ofy = ofy - oy + (e.offsetY || e.layerY)
+                  if (ofx <= 0) ofx = 0
+                  if (ofy <= 0) ofy = 0
+                  if (ofx >= s.width - s.w) ofx = s.width - s.w
+                  if (ofy >= s.height - s.h) ofy = s.height - s.h
+                  s._drawMask(ofx, ofy, s.w, s.h)
                   timer = null;
-                }, 17)
+                }, 10)
               }
             };
+          }
+        } else {
+          s.maskObj.onmousedown = function(e) {
+            let timer = null;
+            if (s.mask) { // 出现遮罩层停止操作
+              let ox = e.offsetX || e.layerX;
+              let oy = e.offsetY || e.offsetY;
+              s.maskObj.onmousemove = function (e) {
+                if (!timer) {
+                  timer = setTimeout(function () {
+                    s._drawMask(ox, oy, (e.offsetX || e.layerX) - ox, (e.offsetY || e.layerY) - oy)
+                    timer = null;
+                  }, 17)
+                }
+              };
+            }
           }
         }
         // 图片拖拽
@@ -220,6 +269,26 @@ export default {
             }
           }
         };
+        if (s.useFrame) {
+          s.maskObj.onmousedown = function (e) {
+            let timer = null;
+            let cx = e.clientX;
+            let cy = e.clientY;
+            s.vueShapeImgDiv.onmousemove = function (e) {
+              if (!timer) {
+                timer = setTimeout(function () {
+                  s.ctx.clearRect(0,0, s.canvasObj.width, s.canvasObj.height);
+                  imgX += (e.clientX - cx);
+                  imgY += (e.clientY - cy);
+                  s.ctx.drawImage(img, imgX, imgY, w, h);
+                  timer = null;
+                  cx = e.clientX;
+                  cy = e.clientY;
+                }, 17)
+              }
+            }
+          };
+        }
         // 图片放大
         let zoom = function (e) {
           if(e.preventDefault){
@@ -256,9 +325,13 @@ export default {
         // 其他浏览器
         s.vueShapeImgDiv.onmousewheel = zoom
       }
-      document.onmouseup = function () {
+      window.onmouseup = function () {
         s.canvasObj.onmousemove = null;
         s.maskObj.onmousemove = null;
+        if (s.useFrame){
+          s.center.onmousemove = null;
+          s.vueShapeImgDiv.onmousemove = null;
+        }
       }
       img.src = imgSrc;
     },
@@ -292,6 +365,12 @@ export default {
     }
     .borderDiv{
       z-index: 500;
+      .center{
+        position: absolute;
+        z-index: 500;
+        cursor: move;
+        background-color: rgba(0,0,0,0);
+      }
       .top, .left, .right, .bottom{
         z-index: 501;
         display: block;
@@ -300,11 +379,19 @@ export default {
       }
       .top, .bottom{
         height: 3px;
+        width: 100%;
         cursor: n-resize;
+      }
+      .bottom{
+        bottom: -2px;
       }
       .left, .right{
         cursor: w-resize;
+        height: 100%;
         width: 3px;
+      }
+      .right{
+        right: -2px;
       }
       .topLeft, .topRight,.bottomLeft,.bottomRight{
         z-index: 502;
