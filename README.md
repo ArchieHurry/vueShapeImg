@@ -2,11 +2,13 @@
 
 [github](https://github.com/ArchieHurry/vueShapeImg)
 
-![Demonstration](https://i.loli.net/2019/05/06/5ccfaab28c42c.gif)
+![Demonstration](http://www.bqmyweb.cn/vueshapeimg/vueShapeImg1-1-9.gif)
 
 ## <a name="english">English</a> <a href="#中文文档">中文文档</a>
 
 > An image resizer made by vue
+
+## [OnlineDemo](http://www.bqmyweb.cn/vueshapeimg/)  
 
 ### How to use
 
@@ -81,6 +83,8 @@ getImage () {
 
 ## <a name="中文文档">中文文档</a> <a href="#english">English</a> 
 > 使用vue编写的图片裁剪组件
+
+## [在线例子](http://www.bqmyweb.cn/vueshapeimg/)
 
 ### 怎样使用
 

@@ -93,7 +93,7 @@ export default {
       this.$refs.file.click()
     },
     // type 可以为base64，blob
-    getImg (type = 'base64', imgType = 'image/png', encoderOptions = 0.92) {
+    getImg (type = 'base64', imgType = 'image/jpeg', encoderOptions = 0.92) {
       const s = this;
       let imgData = s.ctx.getImageData(s.x, s.y, s.w, s.h);
       s.closeMask()
