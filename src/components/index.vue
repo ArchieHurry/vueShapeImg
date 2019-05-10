@@ -37,10 +37,6 @@ export default {
     }
   },
   props: {
-    useFrame: {
-      type: Boolean,
-      default: false
-    },
     height: {
       type: Number,
       default: 500
@@ -49,13 +45,6 @@ export default {
       type: Number,
       default: 500
     },
-    initRange: {
-      type: Array,
-      default () {
-        let s = this
-        return [s.width * 0.25, s.height * 0.25, s.width * 0.5 ,s.height * 0.5]
-      }
-    },
     timelyGetRange: {
       type: Boolean,
       default: false
@@ -63,6 +52,21 @@ export default {
     timelyImageData: {
       type: Boolean,
       default: false
+    },
+    useFrame: {
+      type: Boolean,
+      default: false
+    },
+    canResizeFrame: {
+      type: Boolean,
+      default: true
+    },
+    initRange: {
+      type: Array,
+      default () {
+        let s = this
+        return [s.width * 0.25, s.height * 0.25, s.width * 0.5 ,s.height * 0.5]
+      }
     }
   },
   created () {
@@ -74,20 +78,23 @@ export default {
   methods: {
     showMask () {
       if (this.useFrame) {
-        this._drawMask(this.initRange[0], this.initRange[1], this.initRange[2], this.initRange[3])
+        this.setRange(this.initRange)
       } else {
-        this._drawMask(0,0,0,0)
+        this.setRange([0,0,0,0])
       }
       this.mask = true;
-    },
-    setImgSrc (imgSrc) {
-      this._main(imgSrc)
     },
     closeMask () {
       this.mask = false;
     },
+    setRange (arr = this.initRange) {
+      this._drawMask(arr[0], arr[1], arr[2], arr[3])
+    },
     getRange () {
       return { x: this.x, y: this.y, w: this.w, h: this.h }
+    },
+    setImgSrc (imgSrc) {
+      this._main(imgSrc)
     },
     fileClick () {
       this.$refs.file.click()
@@ -109,21 +116,12 @@ export default {
       s.maskObj.height = s.height
       return res
     },
-    _Base64toBlob(dataurl) {
-      var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-      while (n--) {
-        u8arr[n] = bstr.charCodeAt(n);
-      }
-      return new Blob([u8arr], { type: mime });
-    },
     init () {
       let s = this;
       s.vueShapeImgDiv = document.getElementById('vueShapeImg' + s.timeId)
       if (s.useFrame) {
         s.center = s.vueShapeImgDiv.getElementsByClassName('center')[0]
       }
-
       s.maskObj = document.getElementById('canvas1' + s.timeId);
       s.maskCtx = s.maskObj.getContext('2d');
       s.canvasObj = document.getElementById('canvas' + s.timeId);
@@ -133,62 +131,6 @@ export default {
       s.maskObj.height = s.height;
       s.ctx = s.canvasObj.getContext('2d');
     },
-    _drawMask (x, y, w, h) {
-      let s = this;
-      s.maskCtx.clearRect(0, 0, s.maskObj.width, s.maskObj.height);
-      s.maskCtx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-      if (w < 0){ x = x + w; w = -w }
-      if (h < 0) { y = y + h; h = -h }
-      s.maskCtx.fillRect(0,0,s.canvasObj.width, y);
-      s.maskCtx.fillRect(0,y,x, s.canvasObj.height - y);
-      s.maskCtx.fillRect(x + w, y, s.canvasObj.width -x - w, s.canvasObj.height - y);
-      s.maskCtx.fillRect(x, y + h, w, s.canvasObj.height - h - y);
-      if (!s.useFrame) {
-        s.maskCtx.strokeStyle = 'rgba(255,255,255, 0.8)';
-        s.maskCtx.strokeRect(x,y,w,h);
-      }
-      if (s.useFrame) {
-        s.center.style.width = w + 'px';
-        s.center.style.height = h + 'px';
-        s.center.style.left = x + 'px';
-        s.center.style.top = y + 'px';
-      }
-      s.x = x;s.y = y;s.h = h;s.w = w;
-      if (s.timelyGetRange) s.$emit('rangeChange', { x: x, y: y, w: w, h: h });
-      if (s.timelyImageData) {
-        let timer = null;
-        if (timer) return;
-        timer = setTimeout(function () {
-          try{ s.$emit('imageDataChange', s.ctx.getImageData(x, y, w, h)) }catch (e) {}
-        }, 50)
-      }
-    },
-    _zoomFrame (e) {
-      const s = this
-      const CN = e.target.className
-      let ox = 0, oy = 0, timer = null,x = 0, y = 0, w = 0, h = 0;
-      x = parseInt(s.center.style.left)
-      y = parseInt(s.center.style.top)
-      w = parseInt(s.center.style.width)
-      h = parseInt(s.center.style.height)
-      s.center.onmousemove = function (e) {
-        console.log(e.offsetX, e.offsetY)
-        if (!timer) {
-          timer = setTimeout(function () {
-            ox = e.offsetX - x
-            oy = e.offsetY - y
-            if (CN === 'top') {
-              s._drawMask(x, y + oy / 2, w, h - oy / 2)
-            }
-            timer = null
-            x = parseInt(s.center.style.left)
-            y = parseInt(s.center.style.top)
-            w = parseInt(s.center.style.width)
-            h = parseInt(s.center.style.height)
-          }, 17)
-        }
-      }
-    },
     _main (imgSrc) {
       const s = this;
       let img = new Image();
@@ -196,22 +138,21 @@ export default {
       img.onload = function () {
         let h = s.canvasObj.width / img.width * img.height;
         let w = s.canvasObj.width;
-        h *= 1;
-        w *= 1;
         let left = 0;
         let top = (s.canvasObj.height - h) / 2;
         s.ctx.clearRect(0, 0, s.canvasObj.width, s.canvasObj.height);
         s.ctx.drawImage(img, left, top, w, h);
         let imgX = 0, imgY = top;
-
-        // 遮罩层绘制
+        // 如果使用的是框架模式
         if (s.useFrame) {
           s.showMask()
           s.center.onmousedown = function(e) {
+            // 如果是边框触发，缩放效果
             if (e.target.className !== 'center') {
               s._zoomFrame(e)
               return
             }
+            // 中间层触发,拖拽效果
             s.center.onmousemove = null
             let ox = e.offsetX || e.layerX;
             let oy = e.offsetY || e.offsetY;
@@ -234,6 +175,7 @@ export default {
             };
           }
         } else {
+          // 一般模式，绘制框架
           s.maskObj.onmousedown = function(e) {
             let timer = null;
             if (s.mask) { // 出现遮罩层停止操作
@@ -250,7 +192,7 @@ export default {
             }
           }
         }
-        // 图片拖拽
+        // 图片拖拽，2种模式都使用
         s.canvasObj.onmousedown = function (e) {
           let timer = null;
           let cx = e.clientX;
@@ -270,6 +212,7 @@ export default {
           }
         };
         if (s.useFrame) {
+          // 框架模式，遮罩层上移动图片
           s.maskObj.onmousedown = function (e) {
             let timer = null;
             let cx = e.clientX;
@@ -289,7 +232,7 @@ export default {
             }
           };
         }
-        // 图片放大
+        // 图片放大，2种模式都使用
         let zoom = function (e) {
           if(e.preventDefault){
             e.preventDefault();
@@ -335,6 +278,78 @@ export default {
       }
       img.src = imgSrc;
     },
+    // 绘制遮罩层
+    _drawMask (x, y, w, h) {
+      let s = this;
+      s.maskCtx.clearRect(0, 0, s.maskObj.width, s.maskObj.height);
+      s.maskCtx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+      if (w < 0){ x = x + w; w = -w }
+      if (h < 0) { y = y + h; h = -h }
+      s.maskCtx.fillRect(0,0,s.canvasObj.width, y);
+      s.maskCtx.fillRect(0,y,x, s.canvasObj.height - y);
+      s.maskCtx.fillRect(x + w, y, s.canvasObj.width -x - w, s.canvasObj.height - y);
+      s.maskCtx.fillRect(x, y + h, w, s.canvasObj.height - h - y);
+      if (!s.useFrame) {
+        s.maskCtx.strokeStyle = 'rgba(255,255,255, 0.8)';
+        s.maskCtx.strokeRect(x,y,w,h);
+      }
+      if (s.useFrame) {
+        s.center.style.width = w + 'px';
+        s.center.style.height = h + 'px';
+        s.center.style.left = x + 'px';
+        s.center.style.top = y + 'px';
+      }
+      s.x = x;s.y = y;s.h = h;s.w = w;
+      if (s.timelyGetRange) s.$emit('rangeChange', { x: x, y: y, w: w, h: h });
+      if (s.timelyImageData) {
+        let timer = null;
+        if (timer) return;
+        timer = setTimeout(function () {
+          try{ s.$emit('imageDataChange', s.ctx.getImageData(x, y, w, h)) }catch (e) {}
+        }, 50)
+      }
+    },
+    // 框架缩放
+    _zoomFrame (e) {
+      const s = this
+      const CN = e.target.className
+      let ox = e.screenX, oy = e.screenY, timer = null,x = 0, y = 0, w = 0, h = 0,px =0, py = 0;
+      x = parseInt(s.center.style.left)
+      y = parseInt(s.center.style.top)
+      w = parseInt(s.center.style.width)
+      h = parseInt(s.center.style.height)
+      let  rx = x, ry = y, rw = w, rh = h;
+      s.vueShapeImgDiv.onmousemove = function (e) {
+        if (!timer) {
+          px = e.screenX - ox
+          py = e.screenY - oy
+          if (rx + rw > s.width || ry + rh > s.height) {
+            timer = null
+            return
+          }
+          timer = setTimeout(function () {
+            switch (CN) {
+              case 'top': ry = y + py; rh = h - py; break;
+              case 'bottom': rh = h + py; break;
+              case 'left': rx = x + px; rw = w - px; break;
+              case 'right': rw = w + px; break;
+              case 'topLeft': rx = x + px; ry = y + py; rw = w - px; rh = h -py; break;
+              case 'topRight': ry = y + py; rw = w + px; rh = h - py; break;
+              case 'bottomLeft': rx = x + px; rw = w - px; rh = h + py;  break;
+              case 'bottomRight': rw = w + px; rh = h + py;  break;
+            }
+            if (rx < 0) rx = 0
+            if (ry < 0) rx = 0
+            s._drawMask(rx, ry, rw, rh)
+            timer = null
+          }, 17)
+        }
+      }
+      s.vueShapeImgDiv.onmouseup = function () {
+        s.vueShapeImgDiv.onmouseup = null
+        s.vueShapeImgDiv.onmousemove = null
+      }
+    },
     _fileChange (e) {
       let s = this;
       let file =  e.target.files[0];
@@ -345,6 +360,14 @@ export default {
         reader.onload = null
         s.$refs.file.value = ''
       }
+    },
+    _Base64toBlob(dataurl) {
+      var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new Blob([u8arr], { type: mime });
     }
   }
 }
@@ -375,7 +398,7 @@ export default {
         z-index: 501;
         display: block;
         position: absolute;
-        background: red;
+        background: rgba(48, 135, 255, 0.64);
       }
       .top, .bottom{
         height: 3px;
@@ -399,7 +422,6 @@ export default {
         position: absolute;
         width: 10px;
         height: 10px;
-        background: rgba(138, 43, 226, 0.45);
       }
       .topLeft{
         top: 0;

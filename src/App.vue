@@ -25,8 +25,11 @@ export default {
     imageDataChange (data) {
       console.log(data)
     },
+    getImage () {
+      console.log(this.$refs.cropper.getImg('base64', 'image/jpeg',0.7))
+    },
     ppp1 () {
-      console.log(this.$refs.cropper1.getImg('blob', 'image/jpeg',0.2))
+      console.log(this.$refs.cropper1.getImg('base64', 'image/jpeg',0.7))
     }
   }
 }
