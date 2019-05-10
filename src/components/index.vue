@@ -1,17 +1,15 @@
 <template>
   <div :id="`cropper${timeId}`">
     <div class="vueShapeImg" :id="`vueShapeImg${timeId}`" :style="{ height: height + 'px', width: width + 'px' }">
-      <div class="borderDiv" v-show="mask" v-if="useFrame">
-        <div class="center">
-          <div class="top" ></div>
-          <div class="right" ></div>
-          <div class="bottom" ></div>
-          <div class="left"></div>
-          <div class="topLeft"></div>
-          <div class="topRight"></div>
-          <div class="bottomLeft"></div>
-          <div class="bottomRight"></div>
-        </div>
+      <div  v-show="mask" v-if="useFrame" class="center">
+        <div class="top" ></div>
+        <div class="right" ></div>
+        <div class="bottom" ></div>
+        <div class="left"></div>
+        <div class="topLeft"></div>
+        <div class="topRight"></div>
+        <div class="bottomLeft"></div>
+        <div class="bottomRight"></div>
       </div>
       <canvas :id="`canvas${timeId}`" class="canvas"></canvas>
       <canvas :id="`canvas1${timeId}`" class="mask" v-show="mask"></canvas>
@@ -387,17 +385,13 @@ export default {
     .canvas{
       border: 1px solid rgba(79, 72, 65, 0.35);
     }
-    .borderDiv{
-      z-index: 500;
-      .center{
-        position: absolute;
-        z-index: 510;
-        cursor: move;
-        background-color: rgba(0,0,0,0);
-      }
+    .center{
+      position: absolute;
+      z-index: 510;
+      cursor: move;
+      background-color: rgba(0,0,0,0.01); // 解决ie10以下完全透明z-index会不起作用，div完全沉下去的问题
       .top, .left, .right, .bottom{
         z-index: 520;
-        display: block;
         position: absolute;
         background: rgba(48, 135, 255, 0.64);
       }
@@ -419,7 +413,6 @@ export default {
       }
       .topLeft, .topRight,.bottomLeft,.bottomRight{
         z-index: 530;
-        display: block;
         position: absolute;
         width: 10px;
         height: 10px;
