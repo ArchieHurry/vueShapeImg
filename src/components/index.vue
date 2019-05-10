@@ -382,6 +382,7 @@ export default {
       border: 1px solid rgba(79, 72, 65, 0.35);
       top: 0;
       left: 0;
+      z-index: 10;
     }
     .canvas{
       border: 1px solid rgba(79, 72, 65, 0.35);
@@ -390,12 +391,12 @@ export default {
       z-index: 500;
       .center{
         position: absolute;
-        z-index: 500;
+        z-index: 510;
         cursor: move;
         background-color: rgba(0,0,0,0);
       }
       .top, .left, .right, .bottom{
-        z-index: 501;
+        z-index: 520;
         display: block;
         position: absolute;
         background: rgba(48, 135, 255, 0.64);
@@ -417,7 +418,7 @@ export default {
         right: -2px;
       }
       .topLeft, .topRight,.bottomLeft,.bottomRight{
-        z-index: 502;
+        z-index: 530;
         display: block;
         position: absolute;
         width: 10px;
