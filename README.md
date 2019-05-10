@@ -4,6 +4,8 @@
 
 ![Demonstration](http://www.bqmyweb.cn/vueshapeimg/vueShapeImg1-1-9.gif)
 
+![Demonstration](http://www.bqmyweb.cn/vueshapeimg/1.2.2.gif)
+
 ## <a name="english">English</a> <a href="#中文文档">中文文档</a>
 
 > An image resizer made by vue
