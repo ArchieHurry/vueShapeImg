@@ -288,14 +288,14 @@ export default {
       s.vueShapeImgDiv.addEventListener('DOMMouseScroll',zoom,false);
       // 其他浏览器
       s.vueShapeImgDiv.onmousewheel = zoom;
-      window.onmouseup = function () {
+      window.addEventListener('mouseup', function () {
         s.canvasObj.onmousemove = null;
         s.maskObj.onmousemove = null;
         if (s.useFrame){
           s.center.onmousemove = null;
           s.vueShapeImgDiv.onmousemove = null;
         }
-      }
+      }, false)
     },
     // 绘制遮罩层
     _drawMask (x, y, w, h) {
@@ -329,7 +329,7 @@ export default {
             s.$emit('error', {code: -3, message: 'getImageData failed, it is cross-origin data'});
             s.crossOriginError = 1;
           }
-        }, 50)
+        }, 17) // 修复普通模式下使用跨域图片多次触发-3报错问题
       }
     },
     // 框架缩放
@@ -367,10 +367,6 @@ export default {
             timer = null
           }, 17)
         }
-      }
-      s.vueShapeImgDiv.onmouseup = function () {
-        s.vueShapeImgDiv.onmouseup = null
-        s.vueShapeImgDiv.onmousemove = null
       }
     },
     _fileChange (e) {
