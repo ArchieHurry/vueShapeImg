@@ -1,6 +1,8 @@
 # vueShapeImg
 
-[github](https://github.com/ArchieHurry/vueShapeImg)
+[If you like, please give me a star (๑•̀ㅂ•́)و✧](https://github.com/ArchieHurry/vueShapeImg)
+
+[如果你喜欢它，可以给我星星吗 (๑•̀ㅂ•́)و✧](https://github.com/ArchieHurry/vueShapeImg)
 
 ![Demonstration](http://www.bqmyweb.cn/vueshapeimg/vueShapeImg1-1-9.gif)
 
@@ -10,7 +12,7 @@
 
 > An image resizer made by vue
 
-## [OnlineDemo](http://www.bqmyweb.cn/vueshapeimg/)  
+## [OnlineDemo](http://www.bqmyweb.cn/vueshapeimg/)
 
 ### How to use
 
@@ -192,7 +194,9 @@ getImage () {
 
 #### 1.2.6（2019-5-13 15:41:56）
 - Fixed cross-domain image resource contamination canvas, resulting in subsequent images can not be tailored locally.
+  
 修复了跨域的图片资源污染canvas,造成后续的图片无法本地裁剪的问题。
 
 - Added \$emit ('error'), processing picture format does not support, picture loading failure, cross-domain picture problems.
+  
 增添了 $emit('error'),处理图片格式不支持，图片加载失败，图片跨域问题。
