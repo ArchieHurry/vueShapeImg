@@ -325,8 +325,9 @@ export default {
         if (timer) return;
         timer = setTimeout(function () {
           try{ s.$emit('imageDataChange', s.ctx.getImageData(x, y, w, h)) } catch (e) {
-            s.$emit('error', {code: -3, message: 'getImageData failed, it is cross-origin data'})
-            s.crossOriginError = 1
+            if (w === 0 || h === 0) return
+            s.$emit('error', {code: -3, message: 'getImageData failed, it is cross-origin data'});
+            s.crossOriginError = 1;
           }
         }, 50)
       }

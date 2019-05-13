@@ -5,7 +5,7 @@
     "vue-shape-img",
     "vueCropper"
   ],
-  "version": "1.2.8",
+  "version": "1.2.9",
   "author": "archiehurry <534995272@qq.com>",
   "main": "./dist/vue-shape-img.js",
   "license": "MIT",
