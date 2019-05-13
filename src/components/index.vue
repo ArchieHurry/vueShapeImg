@@ -288,7 +288,7 @@ export default {
       s.vueShapeImgDiv.addEventListener('DOMMouseScroll',zoom,false);
       // 其他浏览器
       s.vueShapeImgDiv.onmousewheel = zoom;
-      window.addEventListener('mouseup', function () {
+      window.addEventListener('mouseup', function () { // 修复在同一页面中使用多个vueShapeImg导致onmouseup污染，裁剪框一直存在的问题
         s.canvasObj.onmousemove = null;
         s.maskObj.onmousemove = null;
         if (s.useFrame){
