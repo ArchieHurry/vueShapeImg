@@ -1,13 +1,27 @@
 <template>
   <div id="app">
-    <div style="margin: 20px auto; width: 500px">
-      <button @click="$refs.cropper1.fileClick()" >本地图片</button>
-      <button @click="$refs.cropper1._main('https://i.loli.net/2019/05/05/5cce957e23c2c.jpg')">设置网络图片</button>
-      <button @click="$refs.cropper1.showMask()" >开始裁剪</button>
-      <button @click="$refs.cropper1.closeMask()" >关闭裁剪</button>
-      <button @click="ppp1" >获取图片</button>
-      <vueShapeImg :useFrame="true" ref="cropper1"></vueShapeImg>
+    <div style="width: 500px;margin-right: 20px;display: inline-block;float: left">
+      <button @click="$refs.vueShapeImg1.fileClick()">localImg</button>
+      <button @click="$refs.vueShapeImg1.setImgSrc('http://www.bqmyweb.cn/vueshapeimg/demo.png')">networkImg</button>
+      <button @click="$refs.vueShapeImg1.showMask()">startCrop</button>
+      <button @click="$refs.vueShapeImg1.closeMask()">endCrop</button>
+      <button @click="getImg1">getImg</button>
+      <p style="font-size: 18px;font-weight: bold;">useFrame:false</p>
+      <vueShapeImg @error="imgError" :useFrame="false" :timelyImageData="true" @imageDataChange="putImg1" ref="vueShapeImg1"></vueShapeImg>
+      <canvas id="canvas1"></canvas>
     </div>
+    <div style="width: 500px;display: inline-block;float: left">
+      <button @click="$refs.vueShapeImg2.fileClick()">localImg</button>
+      <button @click="$refs.vueShapeImg2.setImgSrc('http://www.bqmyweb.cn/vueshapeimg/demo.png')">networkImg</button>
+      <button @click="$refs.vueShapeImg2.showMask()">startCrop</button>
+      <button @click="$refs.vueShapeImg2.closeMask()">endCrop</button>
+      <button @click="getImg2">getImg</button>
+      <button @click="$refs.vueShapeImg2.setRange([200,200,200,200])">setRange</button>
+      <p style="font-size: 18px;font-weight: bold;">useFrame:true</p>
+      <vueShapeImg @error="imgError" :useFrame="true" :timelyImageData="true" @imageDataChange="putImg2" ref="vueShapeImg2"></vueShapeImg>
+      <canvas id="canvas2"></canvas>
+    </div>
+    <div style="clear: both"></div>
   </div>
 </template>
 
@@ -16,21 +30,42 @@ export default {
   name: 'app',
   data () {
     return {
+      canvas1: null,
+      canvas1Ctx: null,
+      canvas2: null,
+      canvas2Ctx: null
     }
   },
+  mounted () {
+    this.canvas1 = document.getElementById('canvas1')
+    this.canvas1Ctx = this.canvas1.getContext('2d')
+    this.canvas2 = document.getElementById('canvas2')
+    this.canvas2Ctx = this.canvas2.getContext('2d')
+  },
   methods: {
-    rangeChange (obj) {
-      console.log(obj)
+    putImg1 (imgData) {
+      this.canvas1Ctx.clearRect(0, 0, 500, 500)
+      let obj = this.$refs.vueShapeImg1.getRange()
+      this.canvas1.width = obj.w
+      this.canvas1.height = obj.h
+      this.canvas1Ctx.putImageData(imgData, 0, 0)
     },
-    imageDataChange (data) {
-      console.log(data)
+    putImg2 (imgData) {
+      this.canvas2Ctx.clearRect(0, 0, 500, 500)
+      let obj = this.$refs.vueShapeImg2.getRange()
+      this.canvas2.width = obj.w
+      this.canvas2.height = obj.h
+      this.canvas2Ctx.putImageData(imgData, 0, 0)
     },
-    getImage () {
-      console.log(this.$refs.cropper.getImg('base64', 'image/jpeg',0.7))
+    getImg1 () {
+      console.log(this.$refs.vueShapeImg1.getImg('base64', 'image/jpeg', 0.7))
     },
-    ppp1 () {
-      console.log(this.$refs.cropper1.getImg('base64', 'image/jpeg',0.7))
-    }
+    getImg2 () {
+      console.log(this.$refs.vueShapeImg2.getImg('base64', 'image/jpeg', 0.7))
+    },
+    imgError (error) {
+      console.error(error)
+    },
   }
 }
 </script>

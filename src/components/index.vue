@@ -11,7 +11,7 @@
         <div class="bottomLeft"></div>
         <div class="bottomRight"></div>
       </div>
-      <canvas :id="`canvas${timeId}`" class="canvas"></canvas>
+      <canvas v-if="canvasIf" :id="`canvas${timeId}`" class="canvas"></canvas>
       <canvas :id="`canvas1${timeId}`" class="mask" v-show="mask"></canvas>
       <input type="file" ref="file" @change="_fileChange" v-show="false">
     </div>
@@ -23,6 +23,8 @@ export default {
   name: 'cropper',
   data () {
     return {
+      crossOriginError: 0,
+      canvasIf: true,
       timeId: '',
       ctx: null,
       canvasObj: null,
@@ -92,7 +94,28 @@ export default {
       return { x: this.x, y: this.y, w: this.w, h: this.h }
     },
     setImgSrc (imgSrc) {
-      this._main(imgSrc)
+      const s = this;
+      let imgLoad = function () {
+        let img = new Image();
+        img.crossorigin = '';
+        img.src = imgSrc;
+        img.onload = function () {
+          s._main(img)
+        }
+        img.onerror = function (e) {
+          s.$emit('error', { code: -2, message: 'Picture loading failed'});
+        }
+      }
+      if (s.crossOriginError) { // 解决跨域图片污染canvas的问题
+        s.canvasIf = false;
+        setTimeout(function () { // edge, ie 下需要延迟销毁元素
+          s.canvasIf = true;
+          s.$nextTick(function () {s.init();imgLoad()})
+        })
+      }else {
+        imgLoad()
+      }
+      s.crossOriginError = 0;
     },
     fileClick () {
       this.$refs.file.click()
@@ -129,73 +152,90 @@ export default {
       s.maskObj.height = s.height;
       s.ctx = s.canvasObj.getContext('2d');
     },
-    _main (imgSrc) {
-      const s = this;
-      let img = new Image();
-      img.crossorigin = '';
-      img.onload = function () {
-        let h = s.canvasObj.width / img.width * img.height;
-        let w = s.canvasObj.width;
-        let left = 0;
-        let top = (s.canvasObj.height - h) / 2;
-        s.ctx.clearRect(0, 0, s.canvasObj.width, s.canvasObj.height);
-        s.ctx.drawImage(img, left, top, w, h);
-        let imgX = 0, imgY = top;
-        // 如果使用的是框架模式
-        if (s.useFrame) {
-          s.showMask()
-          s.center.onmousedown = function(e) {
-            // 如果是边框触发，缩放效果
-            if (e.target.className !== 'center') {
-              s._zoomFrame(e)
-              return
+    _main (img) {
+      const s = this
+      let h = s.canvasObj.width / img.width * img.height;
+      let w = s.canvasObj.width;
+      let left = 0;
+      let top = (s.canvasObj.height - h) / 2;
+      s.ctx.clearRect(0, 0, s.canvasObj.width, s.canvasObj.height);
+      s.ctx.drawImage(img, left, top, w, h);
+      let imgX = 0, imgY = top;
+      // 如果使用的是框架模式
+      if (s.useFrame) {
+        s.showMask()
+        s.center.onmousedown = function(e) {
+          // 如果是边框触发，缩放效果
+          if (e.target.className !== 'center') {
+            s._zoomFrame(e)
+            return
+          }
+          // 中间层触发,拖拽效果
+          s.center.onmousemove = null
+          let ox = e.offsetX || e.layerX;
+          let oy = e.offsetY || e.offsetY;
+          let ofx = s.x - ox + (e.offsetX || e.layerX)
+          let ofy = s.y - oy + (e.offsetY || e.layerY)
+          let timer = null;
+          s.center.onmousemove = function (e) {
+            if (!timer) {
+              timer = setTimeout(function () {
+                ofx = ofx - ox + (e.offsetX || e.layerX)
+                ofy = ofy - oy + (e.offsetY || e.layerY)
+                if (ofx <= 0) ofx = 0
+                if (ofy <= 0) ofy = 0
+                if (ofx >= s.width - s.w) ofx = s.width - s.w
+                if (ofy >= s.height - s.h) ofy = s.height - s.h
+                s._drawMask(ofx, ofy, s.w, s.h)
+                timer = null;
+              }, 10)
             }
-            // 中间层触发,拖拽效果
-            s.center.onmousemove = null
+          };
+        }
+      } else {
+        // 一般模式，绘制框架
+        s.maskObj.onmousedown = function(e) {
+          let timer = null;
+          if (s.mask) { // 出现遮罩层停止操作
             let ox = e.offsetX || e.layerX;
             let oy = e.offsetY || e.offsetY;
-            let ofx = s.x - ox + (e.offsetX || e.layerX)
-            let ofy = s.y - oy + (e.offsetY || e.layerY)
-            let timer = null;
-            s.center.onmousemove = function (e) {
+            s.maskObj.onmousemove = function (e) {
               if (!timer) {
                 timer = setTimeout(function () {
-                  ofx = ofx - ox + (e.offsetX || e.layerX)
-                  ofy = ofy - oy + (e.offsetY || e.layerY)
-                  if (ofx <= 0) ofx = 0
-                  if (ofy <= 0) ofy = 0
-                  if (ofx >= s.width - s.w) ofx = s.width - s.w
-                  if (ofy >= s.height - s.h) ofy = s.height - s.h
-                  s._drawMask(ofx, ofy, s.w, s.h)
+                  s._drawMask(ox, oy, (e.offsetX || e.layerX) - ox, (e.offsetY || e.layerY) - oy)
                   timer = null;
-                }, 10)
+                }, 17)
               }
             };
           }
-        } else {
-          // 一般模式，绘制框架
-          s.maskObj.onmousedown = function(e) {
-            let timer = null;
-            if (s.mask) { // 出现遮罩层停止操作
-              let ox = e.offsetX || e.layerX;
-              let oy = e.offsetY || e.offsetY;
-              s.maskObj.onmousemove = function (e) {
-                if (!timer) {
-                  timer = setTimeout(function () {
-                    s._drawMask(ox, oy, (e.offsetX || e.layerX) - ox, (e.offsetY || e.layerY) - oy)
-                    timer = null;
-                  }, 17)
-                }
-              };
-            }
+        }
+      }
+      // 图片拖拽，2种模式都使用
+      s.canvasObj.onmousedown = function (e) {
+        let timer = null;
+        let cx = e.clientX;
+        let cy = e.clientY;
+        s.canvasObj.onmousemove = function (e) {
+          if (!timer) {
+            timer = setTimeout(function () {
+              s.ctx.clearRect(0,0, s.canvasObj.width, s.canvasObj.height);
+              imgX += (e.clientX - cx);
+              imgY += (e.clientY - cy);
+              s.ctx.drawImage(img, imgX, imgY, w, h);
+              timer = null;
+              cx = e.clientX;
+              cy = e.clientY;
+            }, 17)
           }
         }
-        // 图片拖拽，2种模式都使用
-        s.canvasObj.onmousedown = function (e) {
+      };
+      if (s.useFrame) {
+        // 框架模式，遮罩层上移动图片
+        s.maskObj.onmousedown = function (e) {
           let timer = null;
           let cx = e.clientX;
           let cy = e.clientY;
-          s.canvasObj.onmousemove = function (e) {
+          s.vueShapeImgDiv.onmousemove = function (e) {
             if (!timer) {
               timer = setTimeout(function () {
                 s.ctx.clearRect(0,0, s.canvasObj.width, s.canvasObj.height);
@@ -209,63 +249,42 @@ export default {
             }
           }
         };
-        if (s.useFrame) {
-          // 框架模式，遮罩层上移动图片
-          s.maskObj.onmousedown = function (e) {
-            let timer = null;
-            let cx = e.clientX;
-            let cy = e.clientY;
-            s.vueShapeImgDiv.onmousemove = function (e) {
-              if (!timer) {
-                timer = setTimeout(function () {
-                  s.ctx.clearRect(0,0, s.canvasObj.width, s.canvasObj.height);
-                  imgX += (e.clientX - cx);
-                  imgY += (e.clientY - cy);
-                  s.ctx.drawImage(img, imgX, imgY, w, h);
-                  timer = null;
-                  cx = e.clientX;
-                  cy = e.clientY;
-                }, 17)
-              }
-            }
-          };
-        }
-        // 图片放大，2种模式都使用
-        let zoom = function (e) {
-          if(e.preventDefault){
-            e.preventDefault();
-          }else{
-            window.event.returnValue == false;
-          }
-          if (s.mask && !s.useFrame) { // 出现遮罩层停止操作
-            return;
-          }
-          var delta = 0;
-          if (!event) event = window.event;
-          if (event.wheelDelta) {
-            delta = event.wheelDelta/120;
-            if (window.opera) delta = -delta;
-          } else if (event.detail) {
-            delta = -event.detail/3;
-          }
-          if (delta > 0) {
-            s.ctx.clearRect(0,0, s.canvasObj.width, s.canvasObj.height);
-            w += 10;
-            h += 10 * img.height / img.width;
-            s.ctx.drawImage(img,imgX, imgY, w, h);
-          }
-          if (delta < 0) {
-            s.ctx.clearRect(0,0, s.canvasObj.width, s.canvasObj.height);
-            w -= 10;
-            h -= 10 * img.height / img.width;
-            s.ctx.drawImage(img,imgX, imgY, w, h);
-          }
-        }
-        // 火狐
-        s.vueShapeImgDiv.addEventListener('DOMMouseScroll',zoom,false);
-        // 其他浏览器
-        s.vueShapeImgDiv.onmousewheel = zoom
       }
+      // 图片放大，2种模式都使用
+      let zoom = function (e) {
+        if(e.preventDefault){
+          e.preventDefault();
+        }else{
+          window.event.returnValue == false;
+        }
+        if (s.mask && !s.useFrame) { // 出现遮罩层停止操作
+          return;
+        }
+        var delta = 0;
+        if (!event) event = window.event;
+        if (event.wheelDelta) {
+          delta = event.wheelDelta/120;
+          if (window.opera) delta = -delta;
+        } else if (event.detail) {
+          delta = -event.detail/3;
+        }
+        if (delta > 0) {
+          s.ctx.clearRect(0,0, s.canvasObj.width, s.canvasObj.height);
+          w += 10;
+          h += 10 * img.height / img.width;
+          s.ctx.drawImage(img,imgX, imgY, w, h);
+        }
+        if (delta < 0) {
+          s.ctx.clearRect(0,0, s.canvasObj.width, s.canvasObj.height);
+          w -= 10;
+          h -= 10 * img.height / img.width;
+          s.ctx.drawImage(img,imgX, imgY, w, h);
+        }
+      }
+      // 火狐
+      s.vueShapeImgDiv.addEventListener('DOMMouseScroll',zoom,false);
+      // 其他浏览器
+      s.vueShapeImgDiv.onmousewheel = zoom
       window.onmouseup = function () {
         s.canvasObj.onmousemove = null;
         s.maskObj.onmousemove = null;
@@ -274,7 +293,6 @@ export default {
           s.vueShapeImgDiv.onmousemove = null;
         }
       }
-      img.src = imgSrc;
     },
     // 绘制遮罩层
     _drawMask (x, y, w, h) {
@@ -299,11 +317,14 @@ export default {
       }
       s.x = x;s.y = y;s.h = h;s.w = w;
       if (s.timelyGetRange) s.$emit('rangeChange', { x: x, y: y, w: w, h: h });
-      if (s.timelyImageData) {
+      if (s.timelyImageData && !s.crossOriginError) {
         let timer = null;
         if (timer) return;
         timer = setTimeout(function () {
-          try{ s.$emit('imageDataChange', s.ctx.getImageData(x, y, w, h)) }catch (e) {}
+          try{ s.$emit('imageDataChange', s.ctx.getImageData(x, y, w, h)) } catch (e) {
+            s.$emit('error', {code: -3, message: 'getImageData failed, it is cross-origin data'})
+            s.crossOriginError = 1
+          }
         }, 50)
       }
     },
@@ -350,7 +371,12 @@ export default {
     },
     _fileChange (e) {
       let s = this;
-      let file =  e.target.files[0];
+      let file =  e.target || e.srcElement;
+      file =  file.files[0] || {}; // edge file对象获取延迟报错修正
+      if ('image/png,image/jpeg'.indexOf(file.type) === -1) {
+        s.$emit('error', { code: -1, message: 'Picture format is not supported' })
+        return
+      }
       let reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = function () {
