@@ -192,7 +192,14 @@ getImage () {
 
 ### Upgraded content（升级的内容）
 
+#### 1.2.8（2019-5-13 16:21:55）
+
+- Fixed the problem that timelyGetRange did not trigger when zooming and moving the underlying image in useFrame mode.
+  
+修复了在useFrame模式下缩放和移动底层图片，timelyGetRange 不触发的问题。
+
 #### 1.2.6（2019-5-13 15:41:56）
+
 - Fixed cross-domain image resource contamination canvas, resulting in subsequent images can not be tailored locally.
   
 修复了跨域的图片资源污染canvas,造成后续的图片无法本地裁剪的问题。

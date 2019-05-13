@@ -242,6 +242,7 @@ export default {
                 imgX += (e.clientX - cx);
                 imgY += (e.clientY - cy);
                 s.ctx.drawImage(img, imgX, imgY, w, h);
+                s._drawMask(s.x,s.y,s.w,s.h);
                 timer = null;
                 cx = e.clientX;
                 cy = e.clientY;
@@ -273,18 +274,20 @@ export default {
           w += 10;
           h += 10 * img.height / img.width;
           s.ctx.drawImage(img,imgX, imgY, w, h);
+          s._drawMask(s.x,s.y,s.w,s.h)
         }
         if (delta < 0) {
           s.ctx.clearRect(0,0, s.canvasObj.width, s.canvasObj.height);
           w -= 10;
           h -= 10 * img.height / img.width;
           s.ctx.drawImage(img,imgX, imgY, w, h);
+          s._drawMask(s.x,s.y,s.w,s.h)
         }
-      }
+      };
       // 火狐
       s.vueShapeImgDiv.addEventListener('DOMMouseScroll',zoom,false);
       // 其他浏览器
-      s.vueShapeImgDiv.onmousewheel = zoom
+      s.vueShapeImgDiv.onmousewheel = zoom;
       window.onmouseup = function () {
         s.canvasObj.onmousemove = null;
         s.maskObj.onmousemove = null;
