@@ -58,6 +58,7 @@ Vue.use(vueShapeImg)
 |---------- |-------- |
 |imageDataChange|if props timelyImageData is true, this emit can return the imageData in timely|
 |rangeChange|if props timelyGetRange is true, this emit can return the range in timely|
+|error|error tips: -1(Picture format error), -2（Picture loading failed）, -3(Pictures are cross-domain resources) |
 
 ##### tips: You can't use imageData directly,show it in canvas putImageData 
 
@@ -148,6 +149,7 @@ Vue.use(vueShapeImg)
 |---------- |-------- |
 |imageDataChange|如果timelyImageData为true，那么会及时返回用户选择区域的图像，图像是imageData，img不能直接展示|
 |rangeChange|如果timelyGetRange为true,那么会及时返回用户选择的区域|
+|error|错误提示: -1(图片格式错误), -2（图片加载失败）, -3(图片为跨域资源) |
 
 ##### tips: imageDataChange返回的值可以通过 canvas的putImageData展示
 
@@ -185,3 +187,12 @@ getImage () {
 
 ##### IE10+, chrome, firefox 和其他现代浏览器
 
+
+### Upgraded content（升级的内容）
+
+#### 1.2.6（2019-5-13 15:41:56）
+- Fixed cross-domain image resource contamination canvas, resulting in subsequent images can not be tailored locally.
+修复了跨域的图片资源污染canvas,造成后续的图片无法本地裁剪的问题。
+
+- Added \$emit ('error'), processing picture format does not support, picture loading failure, cross-domain picture problems.
+增添了 $emit('error'),处理图片格式不支持，图片加载失败，图片跨域问题。
