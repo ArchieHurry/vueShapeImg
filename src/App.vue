@@ -5,6 +5,7 @@
       <button @click="$refs.vueShapeImg1.setImgSrc('http://www.bqmyweb.cn/vueshapeimg/demo.png')">networkImg</button>
       <button @click="$refs.vueShapeImg1.showMask()">startCrop</button>
       <button @click="$refs.vueShapeImg1.closeMask()">endCrop</button>
+      <button @click="$refs.vueShapeImg1.rotate()">rotate</button>
       <button @click="getImg1">getImg</button>
       <p style="font-size: 18px;font-weight: bold;">useFrame:false</p>
       <vueShapeImg @error="imgError" :useFrame="false" :timelyImageData="true" @imageDataChange="putImg1" ref="vueShapeImg1"></vueShapeImg>

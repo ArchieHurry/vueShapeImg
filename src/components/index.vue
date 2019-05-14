@@ -24,6 +24,7 @@ export default {
   data () {
     return {
       crossOriginError: 0,
+      deg: 0,
       canvasIf: true,
       timeId: '',
       ctx: null,
@@ -33,7 +34,11 @@ export default {
       maskCtx: null,
       vueShapeImgDiv: null,
       x: 0, y: 0, w: 0, h: 0,
-      center: null
+      center: null,
+      zoom: {
+        img: null,
+        x: 0, y: 0, w: 0, h: 0
+      }
     }
   },
   props: {
@@ -76,6 +81,17 @@ export default {
     this.init()
   },
   methods: {
+    rotate (deg = 45) {
+      const s = this
+      s.deg += deg;
+      s.deg = s.deg < 0 ? 360 + s.deg : s.deg;
+      s.deg = s.deg > 360 ? s.deg - 360 : s.deg;
+      s.ctx.clearRect(-(s.width * 5),-(s.height * 5),s.width * 10,s.height * 10)
+      s.ctx.translate(s.zoom.x + s.zoom.w / 2,s.zoom.y + s.zoom.h / 2)
+      s.ctx.rotate(deg * Math.PI/180);
+      s.ctx.drawImage(s.zoom.img, -s.zoom.w/2, -s.zoom.h/2, s.zoom.w, s.zoom.h)
+      s.ctx.translate(-(s.zoom.x + s.zoom.w / 2),-(s.zoom.y + s.zoom.h / 2))
+    },
     showMask () {
       if (this.useFrame) this.setRange(this.initRange)
       else this.setRange([0,0,0,0])
@@ -94,6 +110,7 @@ export default {
       const s = this;
       let imgLoad = function () {
         let img = new Image();
+        s.zoom.img = img;
         img.crossorigin = '';
         img.src = imgSrc;
         img.onload = function () {
@@ -149,8 +166,9 @@ export default {
       let w = s.canvasObj.width;
       let left = 0;
       let top = (s.canvasObj.height - h) / 2;
-      s.ctx.clearRect(0, 0, s.canvasObj.width, s.canvasObj.height);
+      s.ctx.clearRect(-(s.width * 5),-(s.height * 5),s.width * 10,s.height * 10)
       s.ctx.drawImage(img, left, top, w, h);
+      s.zoom.x = left;s.zoom.y = top;s.zoom.w = w; s.zoom.h = h;
       let imgX = 0, imgY = top;
       // 如果使用的是框架模式
       if (s.useFrame) {
@@ -204,18 +222,24 @@ export default {
       // 图片拖拽，2种模式都使用
       s.canvasObj.onmousedown = function (e) {
         let timer = null;
-        let cx = e.clientX;
-        let cy = e.clientY;
+        let cx = e.screenX;
+        let cy = e.screenY;
+        let lx = 0;
+        let ly = 0;
+        let d = Math.PI / 180;
         s.canvasObj.onmousemove = function (e) {
           if (!timer) {
             timer = setTimeout(function () {
-              s.ctx.clearRect(0,0, s.canvasObj.width, s.canvasObj.height);
-              imgX += (e.clientX - cx);
-              imgY += (e.clientY - cy);
+              s.ctx.clearRect(-(s.width * 5),-(s.height * 5),s.width * 10,s.height * 10)
+              lx = e.screenX - cx;
+              ly = e.screenY - cy;
+              imgX += lx + ly; // 公式研究
+              imgY += ly + lx; // 公式研究
               s.ctx.drawImage(img, imgX, imgY, w, h);
+              s.zoom.x = imgX;s.zoom.y = imgY;
               timer = null;
-              cx = e.clientX;
-              cy = e.clientY;
+              cx = e.screenX;
+              cy = e.screenY;
             }, 17)
           }
         }
@@ -228,7 +252,7 @@ export default {
           s.vueShapeImgDiv.onmousemove = function (e) {
             if (!timer) {
               timer = setTimeout(function () {
-                s.ctx.clearRect(0,0, s.canvasObj.width, s.canvasObj.height);
+                s.ctx.clearRect(-(s.width * 5),-(s.height * 5),s.width * 10,s.height * 10)
                 imgX += (e.clientX - cx);
                 imgY += (e.clientY - cy);
                 s.ctx.drawImage(img, imgX, imgY, w, h);
@@ -254,11 +278,12 @@ export default {
         } else if (event.detail) {
           delta = -event.detail / 3;
         }
-        s.ctx.clearRect(0,0, s.canvasObj.width, s.canvasObj.height);
+        s.ctx.clearRect(-(s.width * 5),-(s.height * 5),s.width * 10,s.height * 10)
         let op = delta > 0 ? 1 : -1;
         w +=  10 * op;
         h += 10 * img.height / img.width * op;
         s.ctx.drawImage(img,imgX, imgY, w, h);
+        s.zoom.x = imgX;s.zoom.y = imgY;s.zoom.w = w; s.zoom.h = h;
         s._drawMask(s.x,s.y,s.w,s.h)
       };
       if ('onmousewheel' in document)   s.vueShapeImgDiv.onmousewheel = zoom;  // 其他浏览器
