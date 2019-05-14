@@ -33,7 +33,7 @@ export default {
       maskCtx: null,
       vueShapeImgDiv: null,
       x: 0, y: 0, w: 0, h: 0,
-      center: null,
+      center: null
     }
   },
   props: {
@@ -77,11 +77,8 @@ export default {
   },
   methods: {
     showMask () {
-      if (this.useFrame) {
-        this.setRange(this.initRange)
-      } else {
-        this.setRange([0,0,0,0])
-      }
+      if (this.useFrame) this.setRange(this.initRange)
+      else this.setRange([0,0,0,0])
       this.mask = true;
     },
     closeMask () {
@@ -101,20 +98,18 @@ export default {
         img.src = imgSrc;
         img.onload = function () {
           s._main(img)
-        }
+        };
         img.onerror = function (e) {
           s.$emit('error', { code: -2, message: 'Picture loading failed'});
         }
-      }
+      };
       if (s.crossOriginError) { // 解决跨域图片污染canvas的问题
         s.canvasIf = false;
         setTimeout(function () { // edge, ie 下需要延迟销毁元素
           s.canvasIf = true;
-          s.$nextTick(function () {s.init();imgLoad()})
+          s.$nextTick(function () { s.init(); imgLoad() })
         })
-      }else {
-        imgLoad()
-      }
+      }else imgLoad();
       s.crossOriginError = 0;
     },
     fileClick () {
@@ -124,25 +119,21 @@ export default {
     getImg (type = 'base64', imgType = 'image/jpeg', encoderOptions = 0.92) {
       const s = this;
       let imgData = s.ctx.getImageData(s.x, s.y, s.w, s.h);
-      s.closeMask()
-      s.maskObj.width = s.w
-      s.maskObj.height = s.h
+      s.closeMask();
+      s.maskObj.width = s.w;
+      s.maskObj.height = s.h;
       s.maskCtx.clearRect(0, 0, s.maskObj.width, s.maskObj.height);
       s.maskCtx.putImageData(imgData, 0, 0);
-      let res = s.maskObj.toDataURL(imgType, encoderOptions)
-      if (type === 'blob') {
-        res = s._Base64toBlob(res)
-      }
-      s.maskObj.width = s.width
-      s.maskObj.height = s.height
+      let res = s.maskObj.toDataURL(imgType, encoderOptions);
+      if (type === 'blob') res = s._Base64toBlob(res);
+      s.maskObj.width = s.width;
+      s.maskObj.height = s.height;
       return res
     },
     init () {
       let s = this;
-      s.vueShapeImgDiv = document.getElementById('vueShapeImg' + s.timeId)
-      if (s.useFrame) {
-        s.center = s.vueShapeImgDiv.getElementsByClassName('center')[0]
-      }
+      s.vueShapeImgDiv = document.getElementById('vueShapeImg' + s.timeId);
+      if (s.useFrame) s.center = s.vueShapeImgDiv.getElementsByClassName('center')[0];
       s.maskObj = document.getElementById('canvas1' + s.timeId);
       s.maskCtx = s.maskObj.getContext('2d');
       s.canvasObj = document.getElementById('canvas' + s.timeId);
@@ -153,7 +144,7 @@ export default {
       s.ctx = s.canvasObj.getContext('2d');
     },
     _main (img) {
-      const s = this
+      const s = this;
       let h = s.canvasObj.width / img.width * img.height;
       let w = s.canvasObj.width;
       let left = 0;
@@ -163,30 +154,30 @@ export default {
       let imgX = 0, imgY = top;
       // 如果使用的是框架模式
       if (s.useFrame) {
-        s.showMask()
+        s.showMask();
         s.center.onmousedown = function(e) {
           // 如果是边框触发，缩放效果
           if (e.target.className !== 'center') {
-            s._zoomFrame(e)
+            s._zoomFrame(e);
             return
           }
           // 中间层触发,拖拽效果
-          s.center.onmousemove = null
+          s.center.onmousemove = null;
           let ox = e.offsetX || e.layerX;
           let oy = e.offsetY || e.offsetY;
-          let ofx = s.x - ox + (e.offsetX || e.layerX)
-          let ofy = s.y - oy + (e.offsetY || e.layerY)
+          let ofx = s.x - ox + (e.offsetX || e.layerX);
+          let ofy = s.y - oy + (e.offsetY || e.layerY);
           let timer = null;
           s.center.onmousemove = function (e) {
             if (!timer) {
               timer = setTimeout(function () {
-                ofx = ofx - ox + (e.offsetX || e.layerX)
-                ofy = ofy - oy + (e.offsetY || e.layerY)
-                if (ofx <= 0) ofx = 0
-                if (ofy <= 0) ofy = 0
-                if (ofx >= s.width - s.w) ofx = s.width - s.w
-                if (ofy >= s.height - s.h) ofy = s.height - s.h
-                s._drawMask(ofx, ofy, s.w, s.h)
+                ofx = ofx - ox + (e.offsetX || e.layerX);
+                ofy = ofy - oy + (e.offsetY || e.layerY);
+                if (ofx <= 0) ofx = 0;
+                if (ofy <= 0) ofy = 0;
+                if (ofx >= s.width - s.w) ofx = s.width - s.w;
+                if (ofy >= s.height - s.h) ofy = s.height - s.h;
+                s._drawMask(ofx, ofy, s.w, s.h);
                 timer = null;
               }, 10)
             }
@@ -202,7 +193,7 @@ export default {
             s.maskObj.onmousemove = function (e) {
               if (!timer) {
                 timer = setTimeout(function () {
-                  s._drawMask(ox, oy, (e.offsetX || e.layerX) - ox, (e.offsetY || e.layerY) - oy)
+                  s._drawMask(ox, oy, (e.offsetX || e.layerX) - ox, (e.offsetY || e.layerY) - oy);
                   timer = null;
                 }, 17)
               }
@@ -229,8 +220,7 @@ export default {
           }
         }
       };
-      if (s.useFrame) {
-        // 框架模式，遮罩层上移动图片
+      if (s.useFrame) { // 框架模式，遮罩层上移动图片
         s.maskObj.onmousedown = function (e) {
           let timer = null;
           let cx = e.clientX;
@@ -253,41 +243,26 @@ export default {
       }
       // 图片放大，2种模式都使用
       let zoom = function (e) {
-        if(e.preventDefault){
-          e.preventDefault();
-        }else{
-          window.event.returnValue == false;
-        }
-        if (s.mask && !s.useFrame) { // 出现遮罩层停止操作
-          return;
-        }
-        var delta = 0;
+        if(e.preventDefault) e.preventDefault();
+        else window.event.returnValue == false;
+        if (s.mask && !s.useFrame)  return; // 出现遮罩层停止操作
+        let delta = 0;
         if (!event) event = window.event;
         if (event.wheelDelta) {
-          delta = event.wheelDelta/120;
+          delta = event.wheelDelta / 120;
           if (window.opera) delta = -delta;
         } else if (event.detail) {
-          delta = -event.detail/3;
+          delta = -event.detail / 3;
         }
-        if (delta > 0) {
-          s.ctx.clearRect(0,0, s.canvasObj.width, s.canvasObj.height);
-          w += 10;
-          h += 10 * img.height / img.width;
-          s.ctx.drawImage(img,imgX, imgY, w, h);
-          s._drawMask(s.x,s.y,s.w,s.h)
-        }
-        if (delta < 0) {
-          s.ctx.clearRect(0,0, s.canvasObj.width, s.canvasObj.height);
-          w -= 10;
-          h -= 10 * img.height / img.width;
-          s.ctx.drawImage(img,imgX, imgY, w, h);
-          s._drawMask(s.x,s.y,s.w,s.h)
-        }
+        s.ctx.clearRect(0,0, s.canvasObj.width, s.canvasObj.height);
+        let op = delta > 0 ? 1 : -1;
+        w +=  10 * op;
+        h += 10 * img.height / img.width * op;
+        s.ctx.drawImage(img,imgX, imgY, w, h);
+        s._drawMask(s.x,s.y,s.w,s.h)
       };
-      // 火狐
-      s.vueShapeImgDiv.addEventListener('DOMMouseScroll',zoom,false);
-      // 其他浏览器
-      s.vueShapeImgDiv.onmousewheel = zoom;
+      if ('onmousewheel' in document)   s.vueShapeImgDiv.onmousewheel = zoom;  // 其他浏览器
+      else  s.vueShapeImgDiv.addEventListener('DOMMouseScroll',zoom,false);  // 火狐
       window.addEventListener('mouseup', function () { // 修复在同一页面中使用多个vueShapeImg导致onmouseup污染，裁剪框一直存在的问题
         s.canvasObj.onmousemove = null;
         s.maskObj.onmousemove = null;
@@ -325,7 +300,7 @@ export default {
         if (timer) return;
         timer = setTimeout(function () {
           try{ s.$emit('imageDataChange', s.ctx.getImageData(x, y, w, h)) } catch (e) {
-            if (w === 0 || h === 0) return
+            if (w === 0 || h === 0) return;
             s.$emit('error', {code: -3, message: 'getImageData failed, it is cross-origin data'});
             s.crossOriginError = 1;
           }
@@ -334,20 +309,20 @@ export default {
     },
     // 框架缩放
     _zoomFrame (e) {
-      const s = this
-      const CN = e.target.className
+      const s = this;
+      const CN = e.target.className;
       let ox = e.screenX, oy = e.screenY, timer = null,x = 0, y = 0, w = 0, h = 0,px =0, py = 0;
-      x = parseInt(s.center.style.left)
-      y = parseInt(s.center.style.top)
-      w = parseInt(s.center.style.width)
-      h = parseInt(s.center.style.height)
+      x = parseInt(s.center.style.left);
+      y = parseInt(s.center.style.top);
+      w = parseInt(s.center.style.width);
+      h = parseInt(s.center.style.height);
       let  rx = x, ry = y, rw = w, rh = h;
       s.vueShapeImgDiv.onmousemove = function (e) {
         if (!timer) {
-          px = e.screenX - ox
-          py = e.screenY - oy
+          px = e.screenX - ox;
+          py = e.screenY - oy;
           if (rx + rw > s.width || ry + rh > s.height) {
-            timer = null
+            timer = null;
             return
           }
           timer = setTimeout(function () {
@@ -361,9 +336,9 @@ export default {
               case 'bottomLeft': rx = x + px; rw = w - px; rh = h + py;  break;
               case 'bottomRight': rw = w + px; rh = h + py;  break;
             }
-            if (rx < 0) rx = 0
-            if (ry < 0) rx = 0
-            s._drawMask(rx, ry, rw, rh)
+            if (rx < 0) rx = 0;
+            if (ry < 0) rx = 0;
+            s._drawMask(rx, ry, rw, rh);
             timer = null
           }, 17)
         }
@@ -374,14 +349,14 @@ export default {
       let file =  e.target || e.srcElement;
       file =  file.files[0] || {}; // edge file对象获取延迟报错修正
       if ('image/png,image/jpeg'.indexOf(file.type) === -1) {
-        s.$emit('error', { code: -1, message: 'Picture format is not supported' })
+        s.$emit('error', { code: -1, message: 'Picture format is not supported' });
         return
       }
       let reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = function () {
-        s.setImgSrc(reader.result)
-        reader.onload = null
+        s.setImgSrc(reader.result);
+        reader.onload = null;
         s.$refs.file.value = ''
       }
     },
