@@ -23,6 +23,7 @@ export default {
   name: 'cropper',
   data () {
     return {
+      perPI: Math.PI / 180,
       crossOriginError: 0,
       deg: 0,
       canvasIf: true,
@@ -82,19 +83,23 @@ export default {
   },
   methods: {
     rotate (deg = 45) {
-      const s = this
+      const s = this;
+      deg = deg % 360;
+      if (deg === 0 || !s.zoom.img) return;
       s.deg += deg;
       s.deg = s.deg < 0 ? 360 + s.deg : s.deg;
       s.deg = s.deg > 360 ? s.deg - 360 : s.deg;
-      s.ctx.clearRect(-(s.width * 5),-(s.height * 5),s.width * 10,s.height * 10)
-      s.ctx.translate(s.zoom.x + s.zoom.w / 2,s.zoom.y + s.zoom.h / 2)
+      s.ctx.clearRect(-(s.width * 5),-(s.height * 5),s.width * 10,s.height * 10);
+      s.ctx.translate(s.zoom.x + s.zoom.w / 2,s.zoom.y + s.zoom.h / 2);
+      if (s.deg)
       s.ctx.rotate(deg * Math.PI/180);
-      s.ctx.drawImage(s.zoom.img, -s.zoom.w/2, -s.zoom.h/2, s.zoom.w, s.zoom.h)
-      s.ctx.translate(-(s.zoom.x + s.zoom.w / 2),-(s.zoom.y + s.zoom.h / 2))
+      s.ctx.drawImage(s.zoom.img, -s.zoom.w/2, -s.zoom.h/2, s.zoom.w, s.zoom.h);
+      s.ctx.translate(-(s.zoom.x + s.zoom.w / 2),-(s.zoom.y + s.zoom.h / 2));
+      s._drawMask(s.x,s.y,s.w,s.h)
     },
     showMask () {
-      if (this.useFrame) this.setRange(this.initRange)
-      else this.setRange([0,0,0,0])
+      if (this.useFrame) this.setRange(this.initRange);
+      else this.setRange([0,0,0,0]);
       this.mask = true;
     },
     closeMask () {
@@ -120,13 +125,12 @@ export default {
           s.$emit('error', { code: -2, message: 'Picture loading failed'});
         }
       };
-      if (s.crossOriginError) { // 解决跨域图片污染canvas的问题
-        s.canvasIf = false;
-        setTimeout(function () { // edge, ie 下需要延迟销毁元素
-          s.canvasIf = true;
-          s.$nextTick(function () { s.init(); imgLoad() })
-        })
-      }else imgLoad();
+      s.canvasIf = false;
+      s.deg = 0;
+      setTimeout(function () { // edge, ie 下需要延迟销毁元素;每次新图片重置画布
+        s.canvasIf = true;
+        s.$nextTick(function () { s.init(); imgLoad() })
+      })
       s.crossOriginError = 0;
     },
     fileClick () {
@@ -162,14 +166,11 @@ export default {
     },
     _main (img) {
       const s = this;
-      let h = s.canvasObj.width / img.width * img.height;
-      let w = s.canvasObj.width;
-      let left = 0;
-      let top = (s.canvasObj.height - h) / 2;
-      s.ctx.clearRect(-(s.width * 5),-(s.height * 5),s.width * 10,s.height * 10)
-      s.ctx.drawImage(img, left, top, w, h);
+      let h = s.canvasObj.width / img.width * img.height,w = s.canvasObj.width,left = 0, top = (s.canvasObj.height - h) / 2,imgX = 0, imgY = top;
+      const w5 = s.width * 5, w10 = s.width * 10, h5 = s.height * 5, h10 = s.height * 10;
       s.zoom.x = left;s.zoom.y = top;s.zoom.w = w; s.zoom.h = h;
-      let imgX = 0, imgY = top;
+      s.ctx.clearRect(-w5,-h5,w10,h10);
+      s.ctx.drawImage(img, left, top, w, h);
       // 如果使用的是框架模式
       if (s.useFrame) {
         s.showMask();
@@ -221,20 +222,15 @@ export default {
       }
       // 图片拖拽，2种模式都使用
       s.canvasObj.onmousedown = function (e) {
-        let timer = null;
-        let cx = e.screenX;
-        let cy = e.screenY;
-        let lx = 0;
-        let ly = 0;
-        let d = Math.PI / 180;
+        let timer = null, cx = e.screenX,cy = e.screenY,lx = 0,ly = 0;
         s.canvasObj.onmousemove = function (e) {
           if (!timer) {
             timer = setTimeout(function () {
-              s.ctx.clearRect(-(s.width * 5),-(s.height * 5),s.width * 10,s.height * 10)
+              s.ctx.clearRect(-w5,-h5,w10,h10);
               lx = e.screenX - cx;
               ly = e.screenY - cy;
-              imgX += lx + ly; // 公式研究
-              imgY += ly + lx; // 公式研究
+              imgX += Math.cos(s.deg * s.perPI) * lx + Math.sin(s.deg * s.perPI) * ly;
+              imgY += Math.cos(s.deg * s.perPI) * ly + Math.sin(-s.deg * s.perPI) * lx;
               s.ctx.drawImage(img, imgX, imgY, w, h);
               s.zoom.x = imgX;s.zoom.y = imgY;
               timer = null;
@@ -246,20 +242,21 @@ export default {
       };
       if (s.useFrame) { // 框架模式，遮罩层上移动图片
         s.maskObj.onmousedown = function (e) {
-          let timer = null;
-          let cx = e.clientX;
-          let cy = e.clientY;
+          let timer = null,cx = e.screenX,cy = e.screenY, lx = 0, ly = 0;
           s.vueShapeImgDiv.onmousemove = function (e) {
             if (!timer) {
               timer = setTimeout(function () {
-                s.ctx.clearRect(-(s.width * 5),-(s.height * 5),s.width * 10,s.height * 10)
-                imgX += (e.clientX - cx);
-                imgY += (e.clientY - cy);
+                s.ctx.clearRect(-w5,-h5,w10,h10);
+                lx = e.screenX - cx;
+                ly = e.screenY - cy;
+                imgX += Math.cos(s.deg * s.perPI) * lx + Math.sin(s.deg * s.perPI) * ly;
+                imgY += Math.cos(s.deg * s.perPI) * ly + Math.sin(-s.deg * s.perPI) * lx;
                 s.ctx.drawImage(img, imgX, imgY, w, h);
                 s._drawMask(s.x,s.y,s.w,s.h);
+                s.zoom.x = imgX;s.zoom.y = imgY;
                 timer = null;
-                cx = e.clientX;
-                cy = e.clientY;
+                cx = e.screenX;
+                cy = e.screenY;
               }, 17)
             }
           }
@@ -278,7 +275,7 @@ export default {
         } else if (event.detail) {
           delta = -event.detail / 3;
         }
-        s.ctx.clearRect(-(s.width * 5),-(s.height * 5),s.width * 10,s.height * 10)
+        s.ctx.clearRect(-w5,-h5,w10,h10)
         let op = delta > 0 ? 1 : -1;
         w +=  10 * op;
         h += 10 * img.height / img.width * op;
