@@ -274,4 +274,4 @@ Vue.use(vueShapeImg)
   
 修复了普通模式下使用timelyGetRange报跨域错误的问题
 
-[more version info（更多版本信息）](./version.md)
+[more version info（更多版本信息）](https://github.com/ArchieHurry/vueShapeImg/blob/master/version.md)
