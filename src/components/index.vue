@@ -106,6 +106,12 @@ export default {
       this.mask = false;
     },
     setRange (arr = this.initRange) {
+      if (arr[2] < 0){ arr[0] = arr[0] + arr[2]; arr[2] = -arr[2] }
+      if (arr[3] < 0) {arr[1] = arr[1] + arr[3]; arr[3] = -arr[3] }
+      arr[0] = arr[0] < 0 ? 0 : arr[0];
+      arr[1] = arr[1] < 0 ? 0 : arr[1];
+      arr[2] = arr[0] + arr[2] > this.width ? this.width - arr[0] : arr[2];
+      arr[3] = arr[1] + arr[3] > this.height ? this.height - arr[1] : arr[3];
       this._drawMask(arr[0], arr[1], arr[2], arr[3])
     },
     getRange () {

@@ -294,7 +294,13 @@ Vue.use(vueShapeImg)
 
 ### Upgraded content（升级的内容）
 
-#### 1.3.2（2019-5-13 11:23:55）
+#### 1.3.4（2019-5-15 15:17:51）
+
+- Limit the range of input parameters of setRange function 
+
+限制了setRange 函数的输入参数范围
+
+#### 1.3.2（2019-5-15 11:23:55）
 
 - Fixed the problem of calling the rotate function picture to return to the center of the canvas after moving the picture in frame mode  
 
@@ -322,8 +328,4 @@ Vue.use(vueShapeImg)
   
 修复了普通模式下使用timelyGetRange报跨域错误的问题
 
-#### 1.2.8（2019-5-13 16:21:55）
-
-- Fixed the problem that timelyGetRange did not trigger when zooming and moving the underlying image in useFrame mode.
-  
-修复了在useFrame模式下缩放和移动底层图片，timelyGetRange 不触发的问题。
+[more version info（更多版本信息）](./version.md)
