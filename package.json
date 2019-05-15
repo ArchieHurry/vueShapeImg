@@ -1,6 +1,6 @@
 {
   "name": "vueshapeimg",
-  "description": "an image resizer made by vue",
+  "description": "Picture clipping component made with vue",
   "keywords": [
     "vue-shape-img",
     "vueCropper"
