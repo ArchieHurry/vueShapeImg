@@ -1,5 +1,7 @@
 # vueShapeImg
 
+> Picture clipping component made with vue
+
 [If you like, please give me a star (๑•̀ㅂ•́)و✧](https://github.com/ArchieHurry/vueShapeImg)
 
 [如果你喜欢它，可以给我星星吗 (๑•̀ㅂ•́)و✧](https://github.com/ArchieHurry/vueShapeImg)
@@ -7,8 +9,6 @@
 ![Demonstration](http://www.bqmyweb.cn/vueshapeimg/1.3.1.gif)
 
 ## <a name="english">English</a> <a href="#中文文档">中文文档</a>
-
-> An image resizer made by vue
 
 ## [OnlineDemo](http://www.bqmyweb.cn/vueshapeimg/)
 
@@ -64,21 +64,9 @@ Vue.use(vueShapeImg)
 ##### tips: You can't use imageData directly,show it in canvas putImageData 
 
 ### Example [OnlineDemo](http://www.bqmyweb.cn/vueshapeimg/)
- <pre><code>
+<pre><code>
 &lt;template&gt;
   &lt;div id=&quot;app&quot;&gt;
-    &lt;div style=&quot;width: 500px;margin-right: 20px;display: inline-block;float: left&quot;&gt;
-      &lt;button @click=&quot;$refs.vueShapeImg1.fileClick()&quot;&gt;localImg&lt;/button&gt;
-      &lt;button @click=&quot;$refs.vueShapeImg1.setImgSrc(&#x27;http://www.bqmyweb.cn/vueshapeimg/demo.png&#x27;)&quot;&gt;networkImg&lt;/button&gt;
-      &lt;button @click=&quot;$refs.vueShapeImg1.showMask()&quot;&gt;startCrop&lt;/button&gt;
-      &lt;button @click=&quot;$refs.vueShapeImg1.closeMask()&quot;&gt;endCrop&lt;/button&gt;
-      &lt;button @click=&quot;$refs.vueShapeImg1.rotate(10)&quot;&gt;rotate10&lt;/button&gt;
-      &lt;button @click=&quot;$refs.vueShapeImg1.rotate(-10)&quot;&gt;rotate-10&lt;/button&gt;
-      &lt;button @click=&quot;getImg1&quot;&gt;getImg&lt;/button&gt;
-      &lt;p style=&quot;font-size: 18px;font-weight: bold;&quot;&gt;useFrame:false&lt;/p&gt;
-      &lt;vueShapeImg @error=&quot;imgError&quot;  :height=&quot;400&quot; :width=&quot;400&quot; :useFrame=&quot;false&quot; :timelyImageData=&quot;true&quot; @imageDataChange=&quot;putImg1&quot; ref=&quot;vueShapeImg1&quot;&gt;&lt;/vueShapeImg&gt;
-      &lt;canvas id=&quot;canvas1&quot;&gt;&lt;/canvas&gt;
-    &lt;/div&gt;
     &lt;div style=&quot;width: 500px;display: inline-block;float: left&quot;&gt;
       &lt;button @click=&quot;$refs.vueShapeImg2.fileClick()&quot;&gt;localImg&lt;/button&gt;
       &lt;button @click=&quot;$refs.vueShapeImg2.setImgSrc(&#x27;http://www.bqmyweb.cn/vueshapeimg/demo.png&#x27;)&quot;&gt;networkImg&lt;/button&gt;
@@ -101,35 +89,21 @@ export default {
   name: &#x27;app&#x27;,
   data () {
     return {
-      canvas1: null,
-      canvas1Ctx: null,
       canvas2: null,
       canvas2Ctx: null
     }
   },
   mounted () {
-    this.canvas1 = document.getElementById(&#x27;canvas1&#x27;)
-    this.canvas1Ctx = this.canvas1.getContext(&#x27;2d&#x27;)
     this.canvas2 = document.getElementById(&#x27;canvas2&#x27;)
     this.canvas2Ctx = this.canvas2.getContext(&#x27;2d&#x27;)
   },
   methods: {
-    putImg1 (imgData) {
-      this.canvas1Ctx.clearRect(0, 0, 500, 500)
-      let obj = this.$refs.vueShapeImg1.getRange()
-      this.canvas1.width = obj.w
-      this.canvas1.height = obj.h
-      this.canvas1Ctx.putImageData(imgData, 0, 0)
-    },
     putImg2 (imgData) {
       this.canvas2Ctx.clearRect(0, 0, 500, 500)
       let obj = this.$refs.vueShapeImg2.getRange()
       this.canvas2.width = obj.w
       this.canvas2.height = obj.h
       this.canvas2Ctx.putImageData(imgData, 0, 0)
-    },
-    getImg1 () {
-      console.log(this.$refs.vueShapeImg1.getImg(&#x27;base64&#x27;, &#x27;image/jpeg&#x27;, 0.7))
     },
     getImg2 () {
       console.log(this.$refs.vueShapeImg2.getImg(&#x27;base64&#x27;, &#x27;image/jpeg&#x27;, 0.7))
@@ -140,9 +114,7 @@ export default {
   }
 }
 &lt;/script&gt;
-
-       
-  </code></pre>
+</code></pre>
   
 
 ### Browser support
@@ -208,89 +180,63 @@ Vue.use(vueShapeImg)
 ##### tips: imageDataChange返回的值可以通过 canvas的putImageData展示
 
 ### 举例 [在线例子](http://www.bqmyweb.cn/vueshapeimg/)
- <pre><code height="200">
-  &lt;template&gt;
-    &lt;div id=&quot;app&quot;&gt;
-      &lt;div style=&quot;width: 500px;margin-right: 20px;display: inline-block;float: left&quot;&gt;
-        &lt;button @click=&quot;$refs.vueShapeImg1.fileClick()&quot;&gt;localImg&lt;/button&gt;
-        &lt;button @click=&quot;$refs.vueShapeImg1.setImgSrc(&#x27;http://www.bqmyweb.cn/vueshapeimg/demo.png&#x27;)&quot;&gt;networkImg&lt;/button&gt;
-        &lt;button @click=&quot;$refs.vueShapeImg1.showMask()&quot;&gt;startCrop&lt;/button&gt;
-        &lt;button @click=&quot;$refs.vueShapeImg1.closeMask()&quot;&gt;endCrop&lt;/button&gt;
-        &lt;button @click=&quot;$refs.vueShapeImg1.rotate(10)&quot;&gt;rotate10&lt;/button&gt;
-        &lt;button @click=&quot;$refs.vueShapeImg1.rotate(-10)&quot;&gt;rotate-10&lt;/button&gt;
-        &lt;button @click=&quot;getImg1&quot;&gt;getImg&lt;/button&gt;
-        &lt;p style=&quot;font-size: 18px;font-weight: bold;&quot;&gt;useFrame:false&lt;/p&gt;
-        &lt;vueShapeImg @error=&quot;imgError&quot;  :height=&quot;400&quot; :width=&quot;400&quot; :useFrame=&quot;false&quot; :timelyImageData=&quot;true&quot; @imageDataChange=&quot;putImg1&quot; ref=&quot;vueShapeImg1&quot;&gt;&lt;/vueShapeImg&gt;
-        &lt;canvas id=&quot;canvas1&quot;&gt;&lt;/canvas&gt;
-      &lt;/div&gt;
-      &lt;div style=&quot;width: 500px;display: inline-block;float: left&quot;&gt;
-        &lt;button @click=&quot;$refs.vueShapeImg2.fileClick()&quot;&gt;localImg&lt;/button&gt;
-        &lt;button @click=&quot;$refs.vueShapeImg2.setImgSrc(&#x27;http://www.bqmyweb.cn/vueshapeimg/demo.png&#x27;)&quot;&gt;networkImg&lt;/button&gt;
-        &lt;button @click=&quot;$refs.vueShapeImg2.showMask()&quot;&gt;startCrop&lt;/button&gt;
-        &lt;button @click=&quot;$refs.vueShapeImg2.closeMask()&quot;&gt;endCrop&lt;/button&gt;
-        &lt;button @click=&quot;getImg2&quot;&gt;getImg&lt;/button&gt;
-        &lt;button @click=&quot;$refs.vueShapeImg2.setRange([200,200,200,200])&quot;&gt;setRange&lt;/button&gt;
-        &lt;button @click=&quot;$refs.vueShapeImg2.rotate(10)&quot;&gt;rotate10&lt;/button&gt;
-        &lt;button @click=&quot;$refs.vueShapeImg2.rotate(-10)&quot;&gt;rotate-10&lt;/button&gt;
-        &lt;p style=&quot;font-size: 18px;font-weight: bold;&quot;&gt;useFrame:true&lt;/p&gt;
-        &lt;vueShapeImg @error=&quot;imgError&quot; :height=&quot;400&quot; :width=&quot;400&quot; :useFrame=&quot;true&quot; :timelyImageData=&quot;true&quot; @imageDataChange=&quot;putImg2&quot; ref=&quot;vueShapeImg2&quot;&gt;&lt;/vueShapeImg&gt;
-        &lt;canvas style=&quot;margin-left: 50px&quot; id=&quot;canvas2&quot;&gt;&lt;/canvas&gt;
-      &lt;/div&gt;
-      &lt;div style=&quot;clear: both&quot;&gt;&lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/template&gt;
-  
-  &lt;script&gt;
-  export default {
-    name: &#x27;app&#x27;,
-    data () {
-      return {
-        canvas1: null,
-        canvas1Ctx: null,
-        canvas2: null,
-        canvas2Ctx: null
-      }
-    },
-    mounted () {
-      this.canvas1 = document.getElementById(&#x27;canvas1&#x27;)
-      this.canvas1Ctx = this.canvas1.getContext(&#x27;2d&#x27;)
-      this.canvas2 = document.getElementById(&#x27;canvas2&#x27;)
-      this.canvas2Ctx = this.canvas2.getContext(&#x27;2d&#x27;)
-    },
-    methods: {
-      putImg1 (imgData) {
-        this.canvas1Ctx.clearRect(0, 0, 500, 500)
-        let obj = this.$refs.vueShapeImg1.getRange()
-        this.canvas1.width = obj.w
-        this.canvas1.height = obj.h
-        this.canvas1Ctx.putImageData(imgData, 0, 0)
-      },
-      putImg2 (imgData) {
-        this.canvas2Ctx.clearRect(0, 0, 500, 500)
-        let obj = this.$refs.vueShapeImg2.getRange()
-        this.canvas2.width = obj.w
-        this.canvas2.height = obj.h
-        this.canvas2Ctx.putImageData(imgData, 0, 0)
-      },
-      getImg1 () {
-        console.log(this.$refs.vueShapeImg1.getImg(&#x27;base64&#x27;, &#x27;image/jpeg&#x27;, 0.7))
-      },
-      getImg2 () {
-        console.log(this.$refs.vueShapeImg2.getImg(&#x27;base64&#x27;, &#x27;image/jpeg&#x27;, 0.7))
-      },
-      imgError (error) {
-        console.error(error)
-      },
-    }
-  }
-  &lt;/script&gt;
+ <pre><code>
+ &lt;template&gt;
+   &lt;div id=&quot;app&quot;&gt;
+     &lt;div style=&quot;width: 500px;display: inline-block;float: left&quot;&gt;
+       &lt;button @click=&quot;$refs.vueShapeImg2.fileClick()&quot;&gt;localImg&lt;/button&gt;
+       &lt;button @click=&quot;$refs.vueShapeImg2.setImgSrc(&#x27;http://www.bqmyweb.cn/vueshapeimg/demo.png&#x27;)&quot;&gt;networkImg&lt;/button&gt;
+       &lt;button @click=&quot;$refs.vueShapeImg2.showMask()&quot;&gt;startCrop&lt;/button&gt;
+       &lt;button @click=&quot;$refs.vueShapeImg2.closeMask()&quot;&gt;endCrop&lt;/button&gt;
+       &lt;button @click=&quot;getImg2&quot;&gt;getImg&lt;/button&gt;
+       &lt;button @click=&quot;$refs.vueShapeImg2.setRange([200,200,200,200])&quot;&gt;setRange&lt;/button&gt;
+       &lt;button @click=&quot;$refs.vueShapeImg2.rotate(10)&quot;&gt;rotate10&lt;/button&gt;
+       &lt;button @click=&quot;$refs.vueShapeImg2.rotate(-10)&quot;&gt;rotate-10&lt;/button&gt;
+       &lt;p style=&quot;font-size: 18px;font-weight: bold;&quot;&gt;useFrame:true&lt;/p&gt;
+       &lt;vueShapeImg @error=&quot;imgError&quot; :height=&quot;400&quot; :width=&quot;400&quot; :useFrame=&quot;true&quot; :timelyImageData=&quot;true&quot; @imageDataChange=&quot;putImg2&quot; ref=&quot;vueShapeImg2&quot;&gt;&lt;/vueShapeImg&gt;
+       &lt;canvas style=&quot;margin-left: 50px&quot; id=&quot;canvas2&quot;&gt;&lt;/canvas&gt;
+     &lt;/div&gt;
+     &lt;div style=&quot;clear: both&quot;&gt;&lt;/div&gt;
+   &lt;/div&gt;
+ &lt;/template&gt;
+ 
+ &lt;script&gt;
+ export default {
+   name: &#x27;app&#x27;,
+   data () {
+     return {
+       canvas2: null,
+       canvas2Ctx: null
+     }
+   },
+   mounted () {
+     this.canvas2 = document.getElementById(&#x27;canvas2&#x27;)
+     this.canvas2Ctx = this.canvas2.getContext(&#x27;2d&#x27;)
+   },
+   methods: {
+     putImg2 (imgData) {
+       this.canvas2Ctx.clearRect(0, 0, 500, 500)
+       let obj = this.$refs.vueShapeImg2.getRange()
+       this.canvas2.width = obj.w
+       this.canvas2.height = obj.h
+       this.canvas2Ctx.putImageData(imgData, 0, 0)
+     },
+     getImg2 () {
+       console.log(this.$refs.vueShapeImg2.getImg(&#x27;base64&#x27;, &#x27;image/jpeg&#x27;, 0.7))
+     },
+     imgError (error) {
+       console.error(error)
+     },
+   }
+ }
+ &lt;/script&gt;
+
 </code></pre>
 
 
 ### 浏览器支持情况
 
 ##### IE10+, chrome, firefox 和其他现代浏览器
-
 
 ### Upgraded content（升级的内容）
 
