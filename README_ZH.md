@@ -1,6 +1,8 @@
-[如果你喜欢它，可以给我星星吗 (๑•̀ㅂ•́)و✧](https://github.com/ArchieHurry/vueShapeImg)
+# vueShapeImg
 
 > 使用vue编写的图片裁剪组件
+
+[如果你喜欢它，可以给我星星吗 (๑•̀ㅂ•́)و✧](https://github.com/ArchieHurry/vueShapeImg)
 
 ## [在线例子](http://www.bqmyweb.cn/vueshapeimg/)
 
