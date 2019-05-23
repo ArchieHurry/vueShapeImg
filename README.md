@@ -28,40 +28,40 @@ Vue.use(vueShapeImg)
 
 #### props
 
-| Parameters | Description | Type | Optional values | Default value |
-|---------- |-------- |---------- |---------- |---------- |
-|useFrame|Clipping pictures using marquee boxes| Boolean | Y | false |
-|canResizeFrame|Whether the box can be scaled and moved| Boolean | Y | true |
-|initRange|Left,Top,Width and Height of box initialization| Array | Y | [width * 0.25, height * 0.25, width * 0.5 ,height * 0.5] |
-|height |- |Number |Y |500 |
-|width |- |Number |Y |500 |
-|timelyGetRange |Timely get user's select range |Boolean |Y |false |
-|timelyImageData |Timely converting pictures that capture the user's range of choice into imageData |Boolean |Y |false |
+|Parameters|Description|Type|Optional values|Default value|
+|----------|--------|----------|----------|----------|
+|useFrame|Clipping pictures using marquee boxes|Boolean|Y|false|
+|canResizeFrame|Whether the box can be scaled and moved|Boolean|Y|true|
+|initRange|Left,Top,Width and Height of box initialization|Array|Y|[width * 0.25, height * 0.25, width * 0.5 ,height * 0.5]|
+|height|-|Number|Y|500|
+|width|-|Number|Y|500|
+|timelyGetRange|Timely get user's select range|Boolean|Y|false|
+|timelyImageData|Timely converting pictures that capture the user's range of choice into imageData|Boolean|Y|false|
 
 ##### tips: You can't use imageData directly,show it in canvas putImageData 
 
 #### methods
 
-| Method name | Description | Parameters |
-|---------- |-------- |---------- |
-|rotate|Rotate the picture on canvas|deg(Arbitrary integer) |
-|setImgSrc|Use network picture. Pictures with different domain names are best not to be used |imgSrc(Picture links or Base64 files)|
+|Method name|Description|Parameters|
+|----------|--------|----------|
+|rotate|Rotate the picture on canvas|deg(Arbitrary integer)|
+|setImgSrc|Use network picture. Pictures with different domain names are best not to be used|imgSrc(Picture links or Base64 files)|
 |fileClick|Use local picture|-|
-|showMask|Open the mask layer, select the area|-| 
+|showMask|Open the mask layer, select the area|-|
 |closeMask|Close the mask layer|-|
 |getRange|Get the scope of user selection|-|
-|setRange|Set the scope of user selection| [left,top,width,height] |
-|getImg|Get pictures of the range selected by the user|type('base64'/'blob'), imgType('image/jpeg' Or other image types),encoderOptions(0.00 - 1.00) |
+|setRange|Set the scope of user selection|[left,top,width,height]|
+|getImg|Get pictures of the range selected by the user|type('base64'/'blob'), imgType('image/jpeg' Or other image types),encoderOptions(0.00 - 1.00)|
 
 ##### tips: getImg ->  imgType -> 'image/jpeg' can compress pictures better.
 
 #### emit
 
-| emit name | Description
-|---------- |-------- |
+|emit name|Description
+|----------|--------|
 |imageDataChange|if props timelyImageData is true, this emit can return the imageData in timely|
 |rangeChange|if props timelyGetRange is true, this emit can return the range in timely|
-|error|error tips: -1(Picture format error), -2(Picture loading failed), -3(Pictures are cross-domain resources) |
+|error|error tips: -1(Picture format error), -2(Picture loading failed), -3(Pictures are cross-domain resources)|
 
 ##### tips: You can't use imageData directly,show it in canvas putImageData 
 

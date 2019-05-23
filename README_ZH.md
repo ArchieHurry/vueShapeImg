@@ -20,40 +20,40 @@ Vue.use(vueShapeImg)
 
 #### props
 
-| 名称 | 描述 | 类型 | 可选参数 | 默认值 |
-|---------- |-------- |---------- |---------- |---------- |
-|useFrame|是否使用选框裁剪图片| Boolean | Y | false |
-|canResizeFrame|选框是否可以缩放| Boolean | Y | true |
-|initRange|数组，依次为左边距，上边距，宽，高| Array | Y | [width * 0.25, height * 0.25, width * 0.5 ,height * 0.5] |
-|height |- |Number |Y |500 |
-|width |- |Number |Y |500 |
-|timelyGetRange |是否及时的获取用户选择的区域 |Boolean |Y |false |
-|timelyImageData |是否及时的返回用户选择的图像区域|Boolean |Y |false |
+|名称|描述|类型|可选参数|默认值|
+|----------|--------|----------|----------|----------|
+|useFrame|是否使用选框裁剪图片|Boolean|Y|false|
+|canResizeFrame|选框是否可以缩放|Boolean|Y|true|
+|initRange|数组，依次为左边距，上边距，宽，高|Array|Y|[width * 0.25, height * 0.25, width * 0.5 ,height * 0.5]|
+|height|-|Number|Y|500|
+|width|-|Number|Y|500|
+|timelyGetRange|是否及时的获取用户选择的区域|Boolean|Y|false|
+|timelyImageData|是否及时的返回用户选择的图像区域|Boolean|Y|false|
 
 ##### 注意: 用户选择的图像区域不能直接使用，使用canvas的pitImageData可以展示 
 
 #### methods
 
-|方法名 | 描述 | 参数 |
-|---------- |-------- |---------- |
+|方法名|描述|参数|
+|----------|--------|----------|
 |rotate|旋转canvas上的图片|任意整数|
-|setImgSrc|如果使用的是网络图片，那么不同域名的图片最好不要使用 |imgSrc(任意可以被img标签加载的资源)|
+|setImgSrc|如果使用的是网络图片，那么不同域名的图片最好不要使用|imgSrc(任意可以被img标签加载的资源)|
 |fileClick|使用本地图片|-|
-|showMask|展开遮罩层，用户选择区域|-| 
+|showMask|展开遮罩层，用户选择区域|-|
 |closeMask|关闭遮罩层|-|
 |getRange|获取用户选择的区域|-|
-|setRange|设置用户选框的大小| [left,top,width,height] |
-|getImg|获取用户选择的区域|type('base64'/'blob'), imgType('image/png' 或者其他任意的web可支持的图片格式),encoderOptions(图片质量默认0.92，可选0.00 - 1.00) |
+|setRange|设置用户选框的大小|[left,top,width,height]|
+|getImg|获取用户选择的区域|type('base64'/'blob'), imgType('image/png' 或者其他任意的web可支持的图片格式),encoderOptions(图片质量默认0.92，可选0.00 - 1.00)|
 
 ##### tips: getImg ->  imgType -> 'image/jpeg' 可以更好的压缩图片
 
 #### emit
 
-| emit name | Description |
-|---------- |-------- |
+|emit name|Description|
+|----------|--------|
 |imageDataChange|如果timelyImageData为true，那么会及时返回用户选择区域的图像，图像是imageData，img不能直接展示|
 |rangeChange|如果timelyGetRange为true,那么会及时返回用户选择的区域|
-|error|错误提示: -1(图片格式错误), -2（图片加载失败）, -3(图片为跨域资源) |
+|error|错误提示: -1(图片格式错误), -2（图片加载失败）, -3(图片为跨域资源)|
 
 ##### tips: imageDataChange返回的值可以通过 canvas的putImageData展示
 

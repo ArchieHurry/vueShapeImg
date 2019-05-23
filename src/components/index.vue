@@ -270,7 +270,7 @@ export default {
       // 图片放大，2种模式都使用
       let zoom = function (e) {
         if(e.preventDefault) e.preventDefault();
-        else window.event.returnValue == false;
+        else window.event.returnValue = false;
         if (s.mask && !s.useFrame)  return; // 出现遮罩层停止操作
         let delta = 0;
         if (!event) event = window.event;
