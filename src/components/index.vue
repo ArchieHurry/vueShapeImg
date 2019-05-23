@@ -267,7 +267,7 @@ export default {
               cy = e.screenY;
             }, 17);
           }
-        }
+        };
       };
       if (s.useFrame) { // 框架模式，遮罩层上移动图片
         s.maskObj.onmousedown = function (e) {
