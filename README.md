@@ -171,7 +171,7 @@ Vue.use(vueShapeImg)
 
 #### emit
 
-| emit name | Description
+| emit name | Description |
 |---------- |-------- |
 |imageDataChange|如果timelyImageData为true，那么会及时返回用户选择区域的图像，图像是imageData，img不能直接展示|
 |rangeChange|如果timelyGetRange为true,那么会及时返回用户选择的区域|
