@@ -1,5 +1,3 @@
-## 中文文档
-
 [如果你喜欢它，可以给我星星吗 (๑•̀ㅂ•́)و✧](https://github.com/ArchieHurry/vueShapeImg)
 
 > 使用vue编写的图片裁剪组件
@@ -24,7 +22,7 @@ Vue.use(vueShapeImg)
 |----------|--------|----------|----------|----------|
 |useFrame|是否使用选框裁剪图片|Boolean|Y|false|
 |canResizeFrame|选框是否可以缩放|Boolean|Y|true|
-|initRange|数组，依次为左边距，上边距，宽，高|Array|Y|\[width * 0.25,height * 0.25,width * 0.5,height * 0.5\]|
+|initRange|数组，依次为左边距，上边距，宽，高|Array|Y|\[width\*0.25,height\*0.25,width\*0.5,height\*0.5\]|
 |height|-|Number|Y|500|
 |width|-|Number|Y|500|
 |timelyGetRange|是否及时的获取用户选择的区域|Boolean|Y|false|

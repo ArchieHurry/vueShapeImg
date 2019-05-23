@@ -32,7 +32,7 @@ Vue.use(vueShapeImg)
 |----------|--------|----------|----------|----------|
 |useFrame|Clipping pictures using marquee boxes|Boolean|Y|false|
 |canResizeFrame|Whether the box can be scaled and moved|Boolean|Y|true|
-|initRange|Left,Top,Width and Height of box initialization|Array|Y|\[width * 0.25,height * 0.25,width * 0.5,height * 0.5\]|
+|initRange|Left,Top,Width and Height of box initialization|Array|Y|\[width\*0.25,height\*0.25,width\*0.5,height\*0.5\]|
 |height|-|Number|Y|500|
 |width|-|Number|Y|500|
 |timelyGetRange|Timely get user's select range|Boolean|Y|false|

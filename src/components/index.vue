@@ -282,7 +282,7 @@ export default {
                 cy = e.screenY;
               }, 17);
             }
-          }
+          };
         };
       }
       // 图片放大，2种模式都使用
