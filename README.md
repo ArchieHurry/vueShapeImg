@@ -1,6 +1,7 @@
 # vueShapeImg
 
 [![install size](https://packagephobia.now.sh/badge?p=vueshapeimg)](https://packagephobia.now.sh/result?p=vueshapeimg)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e05ad3648e3a437ca43a9d166c6b5bfa)](https://www.codacy.com/app/ArchieHurry/vueShapeImg)
 
 > Picture clipping component made with vue. vue编写的图片裁剪组件
 

@@ -247,7 +247,7 @@ export default {
               }
             };
           }
-        }
+        };
       }
       // 图片拖拽，2种模式都使用
       s.canvasObj.onmousedown = function (e) {
