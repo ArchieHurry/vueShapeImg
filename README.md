@@ -140,7 +140,6 @@ Vue.use(vueShapeImg)
 #### 1.3.0 (2019-5-13 17:25:10)
 
 - Fixed the problem of onmouseup pollute caused by using multiple vueShapeImg on the same page and clipping box always exist
-
 - Fixed cross-domain error multiple times triggered when using cross-domain images for cropping in normal mode
 
 #### 1.2.9 (2019-5-13 17:05:41)
