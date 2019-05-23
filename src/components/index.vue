@@ -85,10 +85,16 @@ export default {
     rotate (deg = 45) {
       const s = this;
       deg = deg % 360;
-      if (deg === 0 || !s.zoom.img) { return; }
+      if (deg === 0 || !s.zoom.img) {
+        return;
+      }
       s.deg += deg;
-      s.deg = s.deg < 0 ? 360 + s.deg : s.deg;
-      s.deg = s.deg > 360 ? s.deg - 360 : s.deg;
+      if (s.deg < 0) {
+        s.deg = 360 + s.deg;
+      }
+      if (s.deg > 360) {
+        s.deg = s.deg - 360;
+      }
       s.ctx.clearRect(-(s.width * 5),-(s.height * 5),s.width * 10,s.height * 10);
       s.ctx.translate(s.zoom.x + s.zoom.w / 2,s.zoom.y + s.zoom.h / 2);
       if (s.deg) {
@@ -113,10 +119,10 @@ export default {
     setRange (arr = this.initRange) {
       if (arr[2] < 0){ arr[0] = arr[0] + arr[2]; arr[2] = -arr[2]; }
       if (arr[3] < 0) { arr[1] = arr[1] + arr[3]; arr[3] = -arr[3]; }
-      arr[0] = arr[0] < 0 ? 0 : arr[0];
-      arr[1] = arr[1] < 0 ? 0 : arr[1];
-      arr[2] = arr[0] + arr[2] > this.width ? this.width - arr[0] : arr[2];
-      arr[3] = arr[1] + arr[3] > this.height ? this.height - arr[1] : arr[3];
+      if (arr[0] < 0) { arr[0] = 0; }
+      if (arr[1] < 0) { arr[1] = 0; }
+      if (arr[0] + arr[2] > this.width) { arr[2] = this.width - arr[0]; }
+      if (arr[1] + arr[3] > this.height) { arr[3] = this.height - arr[1]; }
       this._drawMask(arr[0], arr[1], arr[2], arr[3]);
     },
     getRange () {
@@ -289,24 +295,21 @@ export default {
       let zoom = function (e) {
         if(e.preventDefault) {
           e.preventDefault();
-        }
-        else {
+        } else {
           window.event.returnValue = false;
         }
         if (s.mask && !s.useFrame) {
           return; // 出现遮罩层停止操作
         }
         let delta = 0;
-        if (!event) {
-          event = window.event;
-        }
-        if (event.wheelDelta) {
-          delta = event.wheelDelta / 120;
+        if (!e) { e = window.event; }
+        if (e.wheelDelta) {
+          delta = e.wheelDelta / 120;
           if (window.opera) {
             delta = -delta;
           }
-        } else if (event.detail) {
-          delta = -event.detail / 3;
+        } else if (e.detail) {
+          delta = -e.detail / 3;
         }
         s.ctx.clearRect(-w5,-h5,w10,h10);
         let op = delta > 0 ? 1 : -1;
@@ -364,18 +367,17 @@ export default {
       }
       if (s.timelyImageData && !s.crossOriginError) {
         let timer = null;
-        if (timer) {
-          return;
-        }
-        timer = setTimeout(function () {
-          try{ s.$emit("imageDataChange", s.ctx.getImageData(x, y, w, h)); } catch (e) {
-            if (w === 0 || h === 0) {
-              return;
+        if (!timer) {
+          timer = setTimeout(function () {
+            try{ s.$emit("imageDataChange", s.ctx.getImageData(x, y, w, h)); } catch (e) {
+              if (w === 0 || h === 0) {
+                return;
+              }
+              s.$emit("error", {code: -3, message: "getImageData failed, it is cross-origin data"});
+              s.crossOriginError = 1;
             }
-            s.$emit("error", {code: -3, message: "getImageData failed, it is cross-origin data"});
-            s.crossOriginError = 1;
-          }
-        }, 17); // 修复普通模式下使用跨域图片多次触发-3报错问题
+          }, 17); // 修复普通模式下使用跨域图片多次触发-3报错问题
+        }
       }
     },
     // 框架缩放
