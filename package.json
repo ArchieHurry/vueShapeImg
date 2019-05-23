@@ -2,10 +2,13 @@
   "name": "vueshapeimg",
   "description": "Picture clipping component made with vue",
   "keywords": [
-    "vue-shape-img",
-    "vueCropper"
+    "shape",
+    "resizer",
+    "cropper",
+    "vueShapeImg",
+    "picture-editor"
   ],
-  "version": "1.3.5",
+  "version": "1.3.8",
   "author": "archiehurry <534995272@qq.com>",
   "main": "./dist/vue-shape-img.js",
   "license": "MIT",
