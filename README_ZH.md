@@ -24,7 +24,7 @@ Vue.use(vueShapeImg)
 |----------|--------|----------|----------|----------|
 |useFrame|是否使用选框裁剪图片|Boolean|Y|false|
 |canResizeFrame|选框是否可以缩放|Boolean|Y|true|
-|initRange|数组，依次为左边距，上边距，宽，高|Array|Y|\[width * 0.25, height * 0.25, width * 0.5 ,height * 0.5\]|
+|initRange|数组，依次为左边距，上边距，宽，高|Array|Y|\[width * 0.25,height * 0.25,width * 0.5,height * 0.5\]|
 |height|-|Number|Y|500|
 |width|-|Number|Y|500|
 |timelyGetRange|是否及时的获取用户选择的区域|Boolean|Y|false|
@@ -58,6 +58,7 @@ Vue.use(vueShapeImg)
 ##### tips: imageDataChange返回的值可以通过 canvas的putImageData展示
 
 ### 举例 [在线例子](http://www.bqmyweb.cn/vueshapeimg/)
+
  <pre><code>
  &lt;template&gt;
    &lt;div id=&quot;app&quot;&gt;
@@ -110,7 +111,6 @@ Vue.use(vueShapeImg)
 
 </code></pre>
 
-
 ### 浏览器支持情况
 
 #### IE10+, chrome, firefox 和其他现代浏览器
@@ -119,24 +119,24 @@ Vue.use(vueShapeImg)
 
 #### 1.3.4（2019-5-15 15:17:51）
 
-- 限制了setRange 函数的输入参数范围
+限制了setRange 函数的输入参数范围
 
 #### 1.3.2（2019-5-15 11:23:55）
 
-- 修复框架模式下图片移动后调用旋转函数图片返回画布中心的问题
+修复框架模式下图片移动后调用旋转函数图片返回画布中心的问题
 
 #### 1.3.1（2019-5-15 10:47:35）
 
-- 添加了图片旋转功能
+添加了图片旋转功能
 
 #### 1.3.0（2019-5-13 17:25:10）
 
-- 修复在同一页面中使用多个vueShapeImg导致onmouseup污染，裁剪框一直存在的问题
+修复在同一页面中使用多个vueShapeImg导致onmouseup污染，裁剪框一直存在的问题
 
-- 修复在普通模式下使用跨域图片进行裁剪时多次报错的问题
+修复在普通模式下使用跨域图片进行裁剪时多次报错的问题
 
 #### 1.2.9（2019-5-13 17:05:41）
 
-- 修复了普通模式下使用timelyGetRange报跨域错误的问题
+修复了普通模式下使用timelyGetRange报跨域错误的问题
 
 [更多版本信息](https://github.com/ArchieHurry/vueShapeImg/blob/master/version.md)

@@ -417,7 +417,7 @@ export default {
             timer = null;
           }, 17);
         }
-      }
+      };
     },
     _fileChange (e) {
       let s = this;

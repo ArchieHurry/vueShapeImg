@@ -38,7 +38,7 @@ export default {
       canvas1Ctx: null,
       canvas2: null,
       canvas2Ctx: null
-    }
+    };
   },
   mounted () {
     this.canvas1 = document.getElementById("canvas1");
