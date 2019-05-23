@@ -1,4 +1,4 @@
-## <a name="中文文档">中文文档</a>
+## 中文文档
 
 [如果你喜欢它，可以给我星星吗 (๑•̀ㅂ•́)و✧](https://github.com/ArchieHurry/vueShapeImg)
 
