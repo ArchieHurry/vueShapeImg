@@ -20,14 +20,14 @@
 
 <script>
 export default {
-  name: 'cropper',
+  name: "cropper",
   data () {
     return {
       perPI: Math.PI / 180,
       crossOriginError: 0,
       deg: 0,
       canvasIf: true,
-      timeId: '',
+      timeId: "",
       ctx: null,
       canvasObj: null,
       maskObj: null,
@@ -79,13 +79,13 @@ export default {
     this.timeId = new Date().valueOf()
   },
   mounted () {
-    this.init()
+    this.init();
   },
   methods: {
     rotate (deg = 45) {
       const s = this;
       deg = deg % 360;
-      if (deg === 0 || !s.zoom.img) return;
+      if (deg === 0 || !s.zoom.img) { return; }
       s.deg += deg;
       s.deg = s.deg < 0 ? 360 + s.deg : s.deg;
       s.deg = s.deg > 360 ? s.deg - 360 : s.deg;
@@ -97,7 +97,7 @@ export default {
       s._drawMask(s.x,s.y,s.w,s.h)
     },
     showMask () {
-      if (this.useFrame) this.setRange(this.initRange);
+      if (this.useFrame) { this.setRange(this.initRange); }
       else this.setRange([0,0,0,0]);
       this.mask = true;
     },
@@ -114,27 +114,27 @@ export default {
       this._drawMask(arr[0], arr[1], arr[2], arr[3])
     },
     getRange () {
-      return { x: this.x, y: this.y, w: this.w, h: this.h }
+      return { x: this.x, y: this.y, w: this.w, h: this.h };
     },
     setImgSrc (imgSrc) {
       const s = this;
       let imgLoad = function () {
         let img = new Image();
         s.zoom.img = img;
-        img.crossorigin = '';
+        img.crossorigin = "";
         img.src = imgSrc;
         img.onload = function () {
           s._main(img)
         };
         img.onerror = function (e) {
-          s.$emit('error', { code: -2, message: 'Picture loading failed'});
+          s.$emit("error", { code: -2, message: "Picture loading failed"});
         }
       };
       s.canvasIf = false;
       s.deg = 0;
       setTimeout(function () { // edge, ie 下需要延迟销毁元素;每次新图片重置画布
         s.canvasIf = true;
-        s.$nextTick(function () { s.init(); imgLoad() })
+        s.$nextTick(function () { s.init(); imgLoad(); });
       });
       s.crossOriginError = 0;
     },
@@ -142,7 +142,7 @@ export default {
       this.$refs.file.click()
     },
     // type 可以为base64，blob
-    getImg (type = 'base64', imgType = 'image/jpeg', encoderOptions = 0.92) {
+    getImg (type = "base64", imgType = "image/jpeg", encoderOptions = 0.92) {
       const s = this;
       let imgData = s.ctx.getImageData(s.x, s.y, s.w, s.h);
       s.closeMask();
@@ -151,23 +151,23 @@ export default {
       s.maskCtx.clearRect(0, 0, s.maskObj.width, s.maskObj.height);
       s.maskCtx.putImageData(imgData, 0, 0);
       let res = s.maskObj.toDataURL(imgType, encoderOptions);
-      if (type === 'blob') res = s._Base64toBlob(res);
+      if (type === "blob") res = s._Base64toBlob(res);
       s.maskObj.width = s.width;
       s.maskObj.height = s.height;
       return res
     },
     init () {
       let s = this;
-      s.vueShapeImgDiv = document.getElementById('vueShapeImg' + s.timeId);
-      if (s.useFrame) s.center = s.vueShapeImgDiv.getElementsByClassName('center')[0];
-      s.maskObj = document.getElementById('canvas1' + s.timeId);
-      s.maskCtx = s.maskObj.getContext('2d');
-      s.canvasObj = document.getElementById('canvas' + s.timeId);
+      s.vueShapeImgDiv = document.getElementById("vueShapeImg" + s.timeId);
+      if (s.useFrame) s.center = s.vueShapeImgDiv.getElementsByClassName("center")[0];
+      s.maskObj = document.getElementById("canvas1" + s.timeId);
+      s.maskCtx = s.maskObj.getContext("2d");
+      s.canvasObj = document.getElementById("canvas" + s.timeId);
       s.canvasObj.width = s.width;
       s.canvasObj.height = s.height;
       s.maskObj.width = s.width;
       s.maskObj.height = s.height;
-      s.ctx = s.canvasObj.getContext('2d');
+      s.ctx = s.canvasObj.getContext("2d");
     },
     _main (img) {
       const s = this;
@@ -181,7 +181,7 @@ export default {
         s.showMask();
         s.center.onmousedown = function(e) {
           // 如果是边框触发，缩放效果
-          if (e.target.className !== 'center') {
+          if (e.target.className !== "center") {
             s._zoomFrame(e);
             return
           }
@@ -288,9 +288,9 @@ export default {
         s.zoom.x = imgX;s.zoom.y = imgY;s.zoom.w = w; s.zoom.h = h;
         s._drawMask(s.x,s.y,s.w,s.h)
       };
-      if ('onmousewheel' in document)   s.vueShapeImgDiv.onmousewheel = zoom;  // 其他浏览器
-      else  s.vueShapeImgDiv.addEventListener('DOMMouseScroll',zoom,false);  // 火狐
-      window.addEventListener('mouseup', function () { // 修复在同一页面中使用多个vueShapeImg导致onmouseup污染，裁剪框一直存在的问题
+      if ("onmousewheel" in document)   s.vueShapeImgDiv.onmousewheel = zoom;  // 其他浏览器
+      else  s.vueShapeImgDiv.addEventListener("DOMMouseScroll",zoom,false);  // 火狐
+      window.addEventListener("mouseup", function () { // 修复在同一页面中使用多个vueShapeImg导致onmouseup污染，裁剪框一直存在的问题
         s.canvasObj.onmousemove = null;
         s.maskObj.onmousemove = null;
         if (s.useFrame){
@@ -303,7 +303,7 @@ export default {
     _drawMask (x, y, w, h) {
       let s = this;
       s.maskCtx.clearRect(0, 0, s.maskObj.width, s.maskObj.height);
-      s.maskCtx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+      s.maskCtx.fillStyle = "rgba(0, 0, 0, 0.5)";
       if (w < 0){ x = x + w; w = -w }
       if (h < 0) { y = y + h; h = -h }
       s.maskCtx.fillRect(0,0,s.canvasObj.width, y);
@@ -311,24 +311,24 @@ export default {
       s.maskCtx.fillRect(x + w, y, s.canvasObj.width -x - w, s.canvasObj.height - y);
       s.maskCtx.fillRect(x, y + h, w, s.canvasObj.height - h - y);
       if (!s.useFrame) {
-        s.maskCtx.strokeStyle = 'rgba(255,255,255, 0.8)';
+        s.maskCtx.strokeStyle = "rgba(255,255,255, 0.8)";
         s.maskCtx.strokeRect(x,y,w,h);
       }
       if (s.useFrame) {
-        s.center.style.width = w + 'px';
-        s.center.style.height = h + 'px';
-        s.center.style.left = x + 'px';
-        s.center.style.top = y + 'px';
+        s.center.style.width = w + "px";
+        s.center.style.height = h + "px";
+        s.center.style.left = x + "px";
+        s.center.style.top = y + "px";
       }
       s.x = x;s.y = y;s.h = h;s.w = w;
-      if (s.timelyGetRange) s.$emit('rangeChange', { x: x, y: y, w: w, h: h });
+      if (s.timelyGetRange) s.$emit("rangeChange", { x: x, y: y, w: w, h: h });
       if (s.timelyImageData && !s.crossOriginError) {
         let timer = null;
         if (timer) return;
         timer = setTimeout(function () {
-          try{ s.$emit('imageDataChange', s.ctx.getImageData(x, y, w, h)) } catch (e) {
+          try{ s.$emit("imageDataChange", s.ctx.getImageData(x, y, w, h)) } catch (e) {
             if (w === 0 || h === 0) return;
-            s.$emit('error', {code: -3, message: 'getImageData failed, it is cross-origin data'});
+            s.$emit("error", {code: -3, message: "getImageData failed, it is cross-origin data"});
             s.crossOriginError = 1;
           }
         }, 17) // 修复普通模式下使用跨域图片多次触发-3报错问题
@@ -354,14 +354,14 @@ export default {
           }
           timer = setTimeout(function () {
             switch (CN) {
-              case 'top': ry = y + py; rh = h - py; break;
-              case 'bottom': rh = h + py; break;
-              case 'left': rx = x + px; rw = w - px; break;
-              case 'right': rw = w + px; break;
-              case 'topLeft': rx = x + px; ry = y + py; rw = w - px; rh = h -py; break;
-              case 'topRight': ry = y + py; rw = w + px; rh = h - py; break;
-              case 'bottomLeft': rx = x + px; rw = w - px; rh = h + py;  break;
-              case 'bottomRight': rw = w + px; rh = h + py;  break;
+              case "top": ry = y + py; rh = h - py; break;
+              case "bottom": rh = h + py; break;
+              case "left": rx = x + px; rw = w - px; break;
+              case "right": rw = w + px; break;
+              case "topLeft": rx = x + px; ry = y + py; rw = w - px; rh = h -py; break;
+              case "topRight": ry = y + py; rw = w + px; rh = h - py; break;
+              case "bottomLeft": rx = x + px; rw = w - px; rh = h + py;  break;
+              case "bottomRight": rw = w + px; rh = h + py;  break;
             }
             if (rx < 0) rx = 0;
             if (ry < 0) rx = 0;
@@ -375,8 +375,8 @@ export default {
       let s = this;
       let file =  e.target || e.srcElement;
       file =  file.files[0] || {}; // edge file对象获取延迟报错修正
-      if ('image/png,image/jpeg'.indexOf(file.type) === -1) {
-        s.$emit('error', { code: -1, message: 'Picture format is not supported' });
+      if ("image/png,image/jpeg".indexOf(file.type) === -1) {
+        s.$emit("error", { code: -1, message: "Picture format is not supported" });
         return
       }
       let reader = new FileReader();
@@ -384,11 +384,11 @@ export default {
       reader.onload = function () {
         s.setImgSrc(reader.result);
         reader.onload = null;
-        s.$refs.file.value = ''
+        s.$refs.file.value = ""
       }
     },
     _Base64toBlob(dataurl) {
-      var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+      var arr = dataurl.split(","), mime = arr[0].match(/:(.*?);/)[1],
         bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
       while (n--) {
         u8arr[n] = bstr.charCodeAt(n);
