@@ -62,16 +62,15 @@ export default {
       this.canvas2Ctx.putImageData(imgData, 0, 0);
     },
     getImg1 () {
-      console.log(this.$refs.vueShapeImg1.getImg("base64", "image/jpeg", 0.7));
+      this.$refs.vueShapeImg1.getImg("base64", "image/jpeg", 0.7);
     },
     getImg2 () {
-      console.log(this.$refs.vueShapeImg2.getImg("base64", "image/jpeg", 0.7));
+      this.$refs.vueShapeImg2.getImg("base64", "image/jpeg", 0.7);
     },
     imgError (error) {
-      console.error(error);
     },
   }
-}
+};
 </script>
 
 <style>

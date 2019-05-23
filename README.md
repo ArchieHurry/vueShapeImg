@@ -32,7 +32,7 @@ Vue.use(vueShapeImg)
 |----------|--------|----------|----------|----------|
 |useFrame|Clipping pictures using marquee boxes|Boolean|Y|false|
 |canResizeFrame|Whether the box can be scaled and moved|Boolean|Y|true|
-|initRange|Left,Top,Width and Height of box initialization|Array|Y|[width * 0.25, height * 0.25, width * 0.5 ,height * 0.5]|
+|initRange|Left,Top,Width and Height of box initialization|Array|Y|\[width * 0.25, height * 0.25, width * 0.5 ,height * 0.5\]|
 |height|-|Number|Y|500|
 |width|-|Number|Y|500|
 |timelyGetRange|Timely get user's select range|Boolean|Y|false|
@@ -50,8 +50,8 @@ Vue.use(vueShapeImg)
 |showMask|Open the mask layer, select the area|-|
 |closeMask|Close the mask layer|-|
 |getRange|Get the scope of user selection|-|
-|setRange|Set the scope of user selection|[left,top,width,height]|
-|getImg|Get pictures of the range selected by the user|type('base64'/'blob'), imgType('image/jpeg' Or other image types),encoderOptions(0.00 - 1.00)|
+|setRange|Set the scope of user selection|\[left,top,width,height\]|
+|getImg|Get pictures of the range selected by the user|type('base64'/'blob'), imgType('image/jpeg' Or other image types),encoderOptions(0.00 -  1.00)|
 
 ##### tips: getImg ->  imgType -> 'image/jpeg' can compress pictures better.
 
@@ -121,29 +121,29 @@ Vue.use(vueShapeImg)
 
 ### Browser support
 
-##### IE10+, chrome, firefox or other modern Browser
+#### IE10+, chrome, firefox or other modern Browser
 
 ### Upgraded content
 
 #### 1.3.4 (2019-5-15 15:17:51)
 
-- Limit the range of input parameters of setRange function 
+-  Limit the range of input parameters of setRange function
 
 #### 1.3.2 (2019-5-15 11:23:55)
 
-- Fixed the problem of calling the rotate function picture to return to the center of the canvas after moving the picture in frame mode
+-  Fixed the problem of calling the rotate function picture to return to the center of the canvas after moving the picture in frame mode
 
 #### 1.3.1 (2019-5-15 10:47:35)
 
-- Adding image rotate function
+-  Adding image rotate function
 
 #### 1.3.0 (2019-5-13 17:25:10)
 
-- Fixed the problem of onmouseup pollute caused by using multiple vueShapeImg on the same page and clipping box always exist
-- Fixed cross-domain error multiple times triggered when using cross-domain images for cropping in normal mode
+-  Fixed the problem of onmouseup pollute caused by using multiple vueShapeImg on the same page and clipping box always exist
+-  Fixed cross-domain error multiple times triggered when using cross-domain images for cropping in normal mode
 
 #### 1.2.9 (2019-5-13 17:05:41)
 
-- Fixed the problem of using timelyGetRange to report cross-domain errors in normal mode
+-  Fixed the problem of using timelyGetRange to report cross-domain errors in normal mode
 
 [more version info](https://github.com/ArchieHurry/vueShapeImg/blob/master/version.md)

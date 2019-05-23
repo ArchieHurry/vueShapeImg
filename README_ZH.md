@@ -24,7 +24,7 @@ Vue.use(vueShapeImg)
 |----------|--------|----------|----------|----------|
 |useFrame|是否使用选框裁剪图片|Boolean|Y|false|
 |canResizeFrame|选框是否可以缩放|Boolean|Y|true|
-|initRange|数组，依次为左边距，上边距，宽，高|Array|Y|[width * 0.25, height * 0.25, width * 0.5 ,height * 0.5]|
+|initRange|数组，依次为左边距，上边距，宽，高|Array|Y|\[width * 0.25, height * 0.25, width * 0.5 ,height * 0.5\]|
 |height|-|Number|Y|500|
 |width|-|Number|Y|500|
 |timelyGetRange|是否及时的获取用户选择的区域|Boolean|Y|false|
@@ -42,7 +42,7 @@ Vue.use(vueShapeImg)
 |showMask|展开遮罩层，用户选择区域|-|
 |closeMask|关闭遮罩层|-|
 |getRange|获取用户选择的区域|-|
-|setRange|设置用户选框的大小|[left,top,width,height]|
+|setRange|设置用户选框的大小|\[left,top,width,height\]|
 |getImg|获取用户选择的区域|type('base64'/'blob'), imgType('image/png' 或者其他任意的web可支持的图片格式),encoderOptions(图片质量默认0.92，可选0.00 - 1.00)|
 
 ##### tips: getImg ->  imgType -> 'image/jpeg' 可以更好的压缩图片
@@ -113,7 +113,7 @@ Vue.use(vueShapeImg)
 
 ### 浏览器支持情况
 
-##### IE10+, chrome, firefox 和其他现代浏览器
+#### IE10+, chrome, firefox 和其他现代浏览器
 
 ### 升级的内容
 
