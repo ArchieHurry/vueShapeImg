@@ -1,28 +1,28 @@
-var path = require('path')
-var webpack = require('webpack')
+var path = require("path");
+var webpack = require("webpack");
 
 module.exports = {
-  // entry: './src/index.js',
-  entry: './src/main.js',
+  // entry: "./src/index.js",
+  entry: "./src/main.js",
   output: {
-    path: path.resolve(__dirname, './dist'),
-    publicPath: '/dist/',
-    library: 'vueShapeImg',
-    libraryTarget: 'umd',
+    path: path.resolve(__dirname, "./dist"),
+    publicPath: "/dist/",
+    library: "vueShapeImg",
+    libraryTarget: "umd",
     umdNamedDefine: true,
-    filename: 'vue-shape-img.js'
+    filename: "vue-shape-img.js"
   },
     module: {
     rules: [
       {
         test: /\.css$/,
         use: [
-          'vue-style-loader',
-          'css-loader'
+          "vue-style-loader",
+          "css-loader"
         ],
       },      {
         test: /\.vue$/,
-        loader: 'vue-loader',
+        loader: "vue-loader",
         options: {
           loaders: {
           }
@@ -31,43 +31,42 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        loader: 'babel-loader',
+        loader: "babel-loader",
         exclude: /node_modules/
       },
       {
         test: /\.(png|jpg|gif|svg)$/,
-        loader: 'file-loader',
+        loader: "file-loader",
         options: {
-          name: '[name].[ext]?[hash]'
+          name: "[name].[ext]?[hash]"
         }
       }
     ]
   },
   resolve: {
     alias: {
-      'vue$': 'vue/dist/vue.esm.js'
+      "vue$": "vue/dist/vue.esm.js"
     },
-    extensions: ['*', '.js', '.vue', '.json']
+    extensions: ["*", ".js", ".vue", ".json"]
   },
   devServer: {
     historyApiFallback: true,
     noInfo: true,
     overlay: true,
-    clientLogLevel: 'warning',
+    clientLogLevel: "warning",
     hot: true,
     inline: false
   },
   performance: {
     hints: false
   },
-}
+};
 
-if (process.env.NODE_ENV === 'production') {
-  // http://vue-loader.vuejs.org/en/workflow/production.html
+if (process.env.NODE_ENV === "production") {
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: '"production"'
+      "process.env": {
+        NODE_ENV: "'production'"
       }
     }),
     new webpack.optimize.UglifyJsPlugin({
@@ -79,5 +78,5 @@ if (process.env.NODE_ENV === 'production') {
     new webpack.LoaderOptionsPlugin({
       minimize: true
     })
-  ])
+  ]);
 }

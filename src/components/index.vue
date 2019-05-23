@@ -97,21 +97,25 @@ export default {
       s._drawMask(s.x,s.y,s.w,s.h)
     },
     showMask () {
-      if (this.useFrame) { this.setRange(this.initRange); }
-      else this.setRange([0,0,0,0]);
+      if (this.useFrame) {
+        this.setRange(this.initRange);
+      }
+      else {
+        this.setRange([0,0,0,0]);
+      }
       this.mask = true;
     },
     closeMask () {
       this.mask = false;
     },
     setRange (arr = this.initRange) {
-      if (arr[2] < 0){ arr[0] = arr[0] + arr[2]; arr[2] = -arr[2] }
-      if (arr[3] < 0) {arr[1] = arr[1] + arr[3]; arr[3] = -arr[3] }
+      if (arr[2] < 0){ arr[0] = arr[0] + arr[2]; arr[2] = -arr[2]; }
+      if (arr[3] < 0) { arr[1] = arr[1] + arr[3]; arr[3] = -arr[3]; }
       arr[0] = arr[0] < 0 ? 0 : arr[0];
       arr[1] = arr[1] < 0 ? 0 : arr[1];
       arr[2] = arr[0] + arr[2] > this.width ? this.width - arr[0] : arr[2];
       arr[3] = arr[1] + arr[3] > this.height ? this.height - arr[1] : arr[3];
-      this._drawMask(arr[0], arr[1], arr[2], arr[3])
+      this._drawMask(arr[0], arr[1], arr[2], arr[3]);
     },
     getRange () {
       return { x: this.x, y: this.y, w: this.w, h: this.h };
@@ -124,7 +128,7 @@ export default {
         img.crossorigin = "";
         img.src = imgSrc;
         img.onload = function () {
-          s._main(img)
+          s._main(img);
         };
         img.onerror = function (e) {
           s.$emit("error", { code: -2, message: "Picture loading failed"});
@@ -139,7 +143,7 @@ export default {
       s.crossOriginError = 0;
     },
     fileClick () {
-      this.$refs.file.click()
+      this.$refs.file.click();
     },
     // type 可以为base64，blob
     getImg (type = "base64", imgType = "image/jpeg", encoderOptions = 0.92) {
@@ -151,7 +155,9 @@ export default {
       s.maskCtx.clearRect(0, 0, s.maskObj.width, s.maskObj.height);
       s.maskCtx.putImageData(imgData, 0, 0);
       let res = s.maskObj.toDataURL(imgType, encoderOptions);
-      if (type === "blob") res = s._Base64toBlob(res);
+      if (type === "blob") {
+        res = s._Base64toBlob(res);
+      }
       s.maskObj.width = s.width;
       s.maskObj.height = s.height;
       return res
@@ -159,7 +165,9 @@ export default {
     init () {
       let s = this;
       s.vueShapeImgDiv = document.getElementById("vueShapeImg" + s.timeId);
-      if (s.useFrame) s.center = s.vueShapeImgDiv.getElementsByClassName("center")[0];
+      if (s.useFrame) {
+        s.center = s.vueShapeImgDiv.getElementsByClassName("center")[0];
+      }
       s.maskObj = document.getElementById("canvas1" + s.timeId);
       s.maskCtx = s.maskObj.getContext("2d");
       s.canvasObj = document.getElementById("canvas" + s.timeId);
@@ -197,10 +205,18 @@ export default {
               timer = setTimeout(function () {
                 ofx = ofx - ox + (e.offsetX || e.layerX);
                 ofy = ofy - oy + (e.offsetY || e.layerY);
-                if (ofx <= 0) ofx = 0;
-                if (ofy <= 0) ofy = 0;
-                if (ofx >= s.width - s.w) ofx = s.width - s.w;
-                if (ofy >= s.height - s.h) ofy = s.height - s.h;
+                if (ofx <= 0) {
+                  ofx = 0;
+                }
+                if (ofy <= 0) {
+                  ofy = 0;
+                }
+                if (ofx >= s.width - s.w) {
+                  ofx = s.width - s.w;
+                }
+                if (ofy >= s.height - s.h) {
+                  ofy = s.height - s.h;
+                }
                 s._drawMask(ofx, ofy, s.w, s.h);
                 timer = null;
               }, 10)
@@ -269,8 +285,12 @@ export default {
       }
       // 图片放大，2种模式都使用
       let zoom = function (e) {
-        if(e.preventDefault) e.preventDefault();
-        else window.event.returnValue = false;
+        if(e.preventDefault) {
+          e.preventDefault();
+        }
+        else {
+          window.event.returnValue = false;
+        }
         if (s.mask && !s.useFrame)  return; // 出现遮罩层停止操作
         let delta = 0;
         if (!event) event = window.event;
@@ -288,8 +308,12 @@ export default {
         s.zoom.x = imgX;s.zoom.y = imgY;s.zoom.w = w; s.zoom.h = h;
         s._drawMask(s.x,s.y,s.w,s.h)
       };
-      if ("onmousewheel" in document)   s.vueShapeImgDiv.onmousewheel = zoom;  // 其他浏览器
-      else  s.vueShapeImgDiv.addEventListener("DOMMouseScroll",zoom,false);  // 火狐
+      if ("onmousewheel" in document) {
+        s.vueShapeImgDiv.onmousewheel = zoom;  // 其他浏览器
+      }
+      else {
+        s.vueShapeImgDiv.addEventListener("DOMMouseScroll",zoom,false);  // 火狐
+      }
       window.addEventListener("mouseup", function () { // 修复在同一页面中使用多个vueShapeImg导致onmouseup污染，裁剪框一直存在的问题
         s.canvasObj.onmousemove = null;
         s.maskObj.onmousemove = null;
@@ -304,8 +328,14 @@ export default {
       let s = this;
       s.maskCtx.clearRect(0, 0, s.maskObj.width, s.maskObj.height);
       s.maskCtx.fillStyle = "rgba(0, 0, 0, 0.5)";
-      if (w < 0){ x = x + w; w = -w }
-      if (h < 0) { y = y + h; h = -h }
+      if (w < 0) {
+        x = x + w;
+        w = -w;
+      }
+      if (h < 0) {
+        y = y + h;
+        h = -h;
+      }
       s.maskCtx.fillRect(0,0,s.canvasObj.width, y);
       s.maskCtx.fillRect(0,y,x, s.canvasObj.height - y);
       s.maskCtx.fillRect(x + w, y, s.canvasObj.width -x - w, s.canvasObj.height - y);
@@ -321,12 +351,21 @@ export default {
         s.center.style.top = y + "px";
       }
       s.x = x;s.y = y;s.h = h;s.w = w;
-      if (s.timelyGetRange) s.$emit("rangeChange", { x: x, y: y, w: w, h: h });
+      if (s.timelyGetRange) {
+        s.$emit("rangeChange", {
+          x: x,
+          y: y,
+          w: w,
+          h: h
+        });
+      }
       if (s.timelyImageData && !s.crossOriginError) {
         let timer = null;
-        if (timer) return;
+        if (timer) {
+          return;
+        }
         timer = setTimeout(function () {
-          try{ s.$emit("imageDataChange", s.ctx.getImageData(x, y, w, h)) } catch (e) {
+          try{ s.$emit("imageDataChange", s.ctx.getImageData(x, y, w, h)); } catch (e) {
             if (w === 0 || h === 0) return;
             s.$emit("error", {code: -3, message: "getImageData failed, it is cross-origin data"});
             s.crossOriginError = 1;
@@ -384,7 +423,7 @@ export default {
       reader.onload = function () {
         s.setImgSrc(reader.result);
         reader.onload = null;
-        s.$refs.file.value = ""
+        s.$refs.file.value = "";
       }
     },
     _Base64toBlob(dataurl) {

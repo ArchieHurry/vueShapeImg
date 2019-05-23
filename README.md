@@ -131,20 +131,20 @@ Vue.use(vueShapeImg)
 
 #### 1.3.2 (2019-5-15 11:23:55)
 
-- Fixed the problem of calling the rotate function picture to return to the center of the canvas after moving the picture in frame mode  
+- Fixed the problem of calling the rotate function picture to return to the center of the canvas after moving the picture in frame mode
 
 #### 1.3.1 (2019-5-15 10:47:35)
 
 - Adding image rotate function
-  
+
 #### 1.3.0 (2019-5-13 17:25:10)
 
 - Fixed the problem of onmouseup pollute caused by using multiple vueShapeImg on the same page and clipping box always exist
-  
+
 - Fixed cross-domain error multiple times triggered when using cross-domain images for cropping in normal mode
 
 #### 1.2.9 (2019-5-13 17:05:41)
 
 - Fixed the problem of using timelyGetRange to report cross-domain errors in normal mode
-  
+
 [more version info](https://github.com/ArchieHurry/vueShapeImg/blob/master/version.md)

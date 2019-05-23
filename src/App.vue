@@ -31,7 +31,7 @@
 
 <script>
 export default {
-  name: 'app',
+  name: "app",
   data () {
     return {
       canvas1: null,
@@ -41,34 +41,34 @@ export default {
     }
   },
   mounted () {
-    this.canvas1 = document.getElementById('canvas1')
-    this.canvas1Ctx = this.canvas1.getContext('2d')
-    this.canvas2 = document.getElementById('canvas2')
-    this.canvas2Ctx = this.canvas2.getContext('2d')
+    this.canvas1 = document.getElementById("canvas1");
+    this.canvas1Ctx = this.canvas1.getContext("2d");
+    this.canvas2 = document.getElementById("canvas2");
+    this.canvas2Ctx = this.canvas2.getContext("2d");
   },
   methods: {
     putImg1 (imgData) {
-      this.canvas1Ctx.clearRect(0, 0, 500, 500)
-      let obj = this.$refs.vueShapeImg1.getRange()
-      this.canvas1.width = obj.w
-      this.canvas1.height = obj.h
-      this.canvas1Ctx.putImageData(imgData, 0, 0)
+      this.canvas1Ctx.clearRect(0, 0, 500, 500);
+      let obj = this.$refs.vueShapeImg1.getRange();
+      this.canvas1.width = obj.w;
+      this.canvas1.height = obj.h;
+      this.canvas1Ctx.putImageData(imgData, 0, 0);
     },
     putImg2 (imgData) {
-      this.canvas2Ctx.clearRect(0, 0, 500, 500)
-      let obj = this.$refs.vueShapeImg2.getRange()
-      this.canvas2.width = obj.w
-      this.canvas2.height = obj.h
-      this.canvas2Ctx.putImageData(imgData, 0, 0)
+      this.canvas2Ctx.clearRect(0, 0, 500, 500);
+      let obj = this.$refs.vueShapeImg2.getRange();
+      this.canvas2.width = obj.w;
+      this.canvas2.height = obj.h;
+      this.canvas2Ctx.putImageData(imgData, 0, 0);
     },
     getImg1 () {
-      console.log(this.$refs.vueShapeImg1.getImg('base64', 'image/jpeg', 0.7))
+      console.log(this.$refs.vueShapeImg1.getImg("base64", "image/jpeg", 0.7));
     },
     getImg2 () {
-      console.log(this.$refs.vueShapeImg2.getImg('base64', 'image/jpeg', 0.7))
+      console.log(this.$refs.vueShapeImg2.getImg("base64", "image/jpeg", 0.7));
     },
     imgError (error) {
-      console.error(error)
+      console.error(error);
     },
   }
 }
