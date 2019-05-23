@@ -1,5 +1,6 @@
 # vueShapeImg
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b7eb0963e7114363af36fbac78f48acb)](https://app.codacy.com/app/ArchieHurry/vueShapeImg?utm_source=github.com&utm_medium=referral&utm_content=ArchieHurry/vueShapeImg&utm_campaign=Badge_Grade_Dashboard)
 [![install size](https://packagephobia.now.sh/badge?p=vueshapeimg)](https://packagephobia.now.sh/result?p=vueshapeimg)
 
 > Picture clipping component made with vue. vue编写的图片裁剪组件
