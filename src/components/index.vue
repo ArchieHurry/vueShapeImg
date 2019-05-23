@@ -96,7 +96,7 @@ export default {
       }
       s.ctx.drawImage(s.zoom.img, -s.zoom.w/2, -s.zoom.h/2, s.zoom.w, s.zoom.h);
       s.ctx.translate(-(s.zoom.x + s.zoom.w / 2),-(s.zoom.y + s.zoom.h / 2));
-      s._drawMask(s.x,s.y,s.w,s.h)
+      s._drawMask(s.x,s.y,s.w,s.h);
     },
     showMask () {
       if (this.useFrame) {
@@ -162,7 +162,7 @@ export default {
       }
       s.maskObj.width = s.width;
       s.maskObj.height = s.height;
-      return res
+      return res;
     },
     init () {
       let s = this;
@@ -193,7 +193,7 @@ export default {
           // 如果是边框触发，缩放效果
           if (e.target.className !== "center") {
             s._zoomFrame(e);
-            return
+            return;
           }
           // 中间层触发,拖拽效果
           s.center.onmousemove = null;
@@ -293,7 +293,9 @@ export default {
         else {
           window.event.returnValue = false;
         }
-        if (s.mask && !s.useFrame)  return; // 出现遮罩层停止操作
+        if (s.mask && !s.useFrame) {
+          return; // 出现遮罩层停止操作
+        }
         let delta = 0;
         if (!event) {
           event = window.event;
@@ -367,7 +369,9 @@ export default {
         }
         timer = setTimeout(function () {
           try{ s.$emit("imageDataChange", s.ctx.getImageData(x, y, w, h)); } catch (e) {
-            if (w === 0 || h === 0) return;
+            if (w === 0 || h === 0) {
+              return;
+            }
             s.$emit("error", {code: -3, message: "getImageData failed, it is cross-origin data"});
             s.crossOriginError = 1;
           }
@@ -429,7 +433,7 @@ export default {
         s.setImgSrc(reader.result);
         reader.onload = null;
         s.$refs.file.value = "";
-      }
+      };
     },
     _Base64toBlob(dataurl) {
       let arr = dataurl.split(","), mime = arr[0].match(/:(.*?);/)[1],
