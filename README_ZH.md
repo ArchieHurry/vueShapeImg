@@ -117,6 +117,10 @@ Vue.use(vueShapeImg)
 
 ### 升级的内容
 
+#### 1.4.1 (2019-5-24 09:41:00)
+
+修复了在ie浏览器，框架模式下 移动图片时在裁剪框上触发mouseup事件时，再次拖拽图片会触发拖拽整个canvas的问题。
+
 #### 1.3.4（2019-5-15 15:17:51）
 
 限制了setRange 函数的输入参数范围
@@ -134,9 +138,5 @@ Vue.use(vueShapeImg)
 修复在同一页面中使用多个vueShapeImg导致onmouseup污染，裁剪框一直存在的问题
 
 修复在普通模式下使用跨域图片进行裁剪时多次报错的问题
-
-#### 1.2.9（2019-5-13 17:05:41）
-
-修复了普通模式下使用timelyGetRange报跨域错误的问题
 
 [更多版本信息](https://github.com/ArchieHurry/vueShapeImg/blob/master/version.md)

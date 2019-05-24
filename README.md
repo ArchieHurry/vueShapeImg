@@ -125,6 +125,10 @@ Vue.use(vueShapeImg)
 
 ### Upgraded content
 
+#### 1.4.1 (2019-5-24 09:41:00)
+
+Fixed the problem of dragging the whole canvas when the mouseup event was triggered on the clipping box when moving the picture in the frame mode in IE browser.
+
 #### 1.3.4 (2019-5-15 15:17:51)
 
 Limit the range of input parameters of setRange function
@@ -142,9 +146,5 @@ Adding image rotate function
 Fixed the problem of onmouseup pollute caused by using multiple vueShapeImg on the same page and clipping box always exist
 
 Fixed cross-domain error multiple times triggered when using cross-domain images for cropping in normal mode
-
-#### 1.2.9 (2019-5-13 17:05:41)
-
-Fixed the problem of using timelyGetRange to report cross-domain errors in normal mode
 
 [more version info](https://github.com/ArchieHurry/vueShapeImg/blob/master/version.md)
