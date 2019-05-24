@@ -138,9 +138,9 @@ export default {
         img.onload = function () {
           s._main(img);
         };
-        img.onerror = function (e) {
+        img.onerror = function () {
           s.$emit("error", { code: -2, message: "Picture loading failed"});
-        }
+        };
       };
       s.canvasIf = false;
       s.deg = 0;
