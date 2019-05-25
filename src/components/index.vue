@@ -70,7 +70,7 @@ export default {
     initRange: {
       type: Array,
       default () {
-        let s = this;
+        const s = this;
         return [s.width * 0.25, s.height * 0.25, s.width * 0.5 ,s.height * 0.5];
       }
     }
@@ -174,7 +174,7 @@ export default {
       return res;
     },
     init () {
-      let s = this;
+      const s = this;
       s.vueShapeImgDiv = document.getElementById("vueShapeImg" + s.timeId);
       if (s.useFrame) {
         s.center = s.vueShapeImgDiv.getElementsByClassName("center")[0];
