@@ -105,28 +105,31 @@ export default {
       s._drawMask(s.x,s.y,s.w,s.h);
     },
     showMask () {
-      if (this.useFrame) {
-        this.setRange(this.initRange);
+      const s = this;
+      if (s.useFrame) {
+        s.setRange(s.initRange);
       }
       else {
-        this.setRange([0,0,0,0]);
+        s.setRange([0,0,0,0]);
       }
-      this.mask = true;
+      s.mask = true;
     },
     closeMask () {
       this.mask = false;
     },
     setRange (arr = this.initRange) {
+      const s = this;
       if (arr[2] < 0){ arr[0] = arr[0] + arr[2]; arr[2] = -arr[2]; }
       if (arr[3] < 0) { arr[1] = arr[1] + arr[3]; arr[3] = -arr[3]; }
       if (arr[0] < 0) { arr[0] = 0; }
       if (arr[1] < 0) { arr[1] = 0; }
-      if (arr[0] + arr[2] > this.width) { arr[2] = this.width - arr[0]; }
-      if (arr[1] + arr[3] > this.height) { arr[3] = this.height - arr[1]; }
-      this._drawMask(arr[0], arr[1], arr[2], arr[3]);
+      if (arr[0] + arr[2] > s.width) { arr[2] = s.width - arr[0]; }
+      if (arr[1] + arr[3] > s.height) { arr[3] = s.height - arr[1]; }
+      s._drawMask(arr[0], arr[1], arr[2], arr[3]);
     },
     getRange () {
-      return { x: this.x, y: this.y, w: this.w, h: this.h };
+      const s = this;
+      return { x: s.x, y: s.y, w: s.w, h: s.h };
     },
     setImgSrc (imgSrc) {
       const s = this;
@@ -338,7 +341,7 @@ export default {
     },
     // 绘制遮罩层
     _drawMask (x, y, w, h) {
-      let s = this;
+      const s = this;
       s.maskCtx.clearRect(0, 0, s.maskObj.width, s.maskObj.height);
       s.maskCtx.fillStyle = "rgba(0, 0, 0, 0.5)";
       if (w < 0) {
@@ -424,7 +427,7 @@ export default {
       };
     },
     _fileChange (e) {
-      let s = this;
+      const s = this;
       let file =  e.target || e.srcElement;
       file =  file.files[0] || {}; // edge file对象获取延迟报错修正
       if ("image/png,image/jpeg".indexOf(file.type) === -1) {
