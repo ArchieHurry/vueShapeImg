@@ -11,7 +11,7 @@
 
 ![Demonstration](http://www.bqmyweb.cn/vueshapeimg/1.3.1.gif)
 
-## <a name="english">English</a> <a href="https://github.com/ArchieHurry/vueShapeImg/blob/master/README_ZH.md">中文文档</a>
+## <a name="english">English</a> <a href="http://bqmyweb.oss-cn-shenzhen.aliyuncs.com/file/vueShapeImg/README_CN.html">中文文档</a>
 
 ## [OnlineDemo](http://www.bqmyweb.cn/vueshapeimg/)
 

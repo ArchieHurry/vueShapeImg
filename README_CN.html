@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css">
+  <style>
+    .markdown-body {
+      box-sizing: border-box;
+      min-width: 200px;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 45px;
+    }
+    @media (max-width: 767px) {
+      .markdown-body {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+<article class="markdown-body entry-content p-3 p-md-6" itemprop="text"><h1><a id="user-content-vueshapeimg" class="anchor" aria-hidden="true" href="#vueshapeimg"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>vueShapeImg</h1>
+  <blockquote>
+    <p>使用vue编写的图片裁剪组件</p>
+  </blockquote>
+  <p><a href="https://github.com/ArchieHurry/vueShapeImg">如果你喜欢它，可以给我星星吗 (๑•̀ㅂ•́)و✧</a></p>
+  <h2><a id="user-content-在线例子" class="anchor" aria-hidden="true" href="#在线例子"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><a href="http://www.bqmyweb.cn/vueshapeimg/" rel="nofollow">在线例子</a></h2>
+  <h3><a id="user-content-怎样使用" class="anchor" aria-hidden="true" href="#怎样使用"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>怎样使用</h3>
+  <div class="highlight highlight-source-shell"><pre>import vueShapeImg from <span class="pl-s"><span class="pl-pds">'</span>vueshapeimg<span class="pl-pds">'</span></span>
+Vue.use(vueShapeImg)
+
+<span class="pl-k">&lt;</span>vue-shape-img&gt;&lt;/vue-shape-img<span class="pl-k">&gt;</span>
+</pre></div>
+  <h3><a id="user-content-接口文档" class="anchor" aria-hidden="true" href="#接口文档"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>接口文档</h3>
+  <h4><a id="user-content-props" class="anchor" aria-hidden="true" href="#props"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>props</h4>
+  <table>
+    <thead>
+    <tr>
+      <th>名称</th>
+      <th>描述</th>
+      <th>类型</th>
+      <th>可选参数</th>
+      <th>默认值</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>useFrame</td>
+      <td>是否使用选框裁剪图片</td>
+      <td>Boolean</td>
+      <td>Y</td>
+      <td>false</td>
+    </tr>
+    <tr>
+      <td>canResizeFrame</td>
+      <td>选框是否可以缩放</td>
+      <td>Boolean</td>
+      <td>Y</td>
+      <td>true</td>
+    </tr>
+    <tr>
+      <td>initRange</td>
+      <td>数组，依次为左边距，上边距，宽，高</td>
+      <td>Array</td>
+      <td>Y</td>
+      <td>[width*0.25,height*0.25,width*0.5,height*0.5]</td>
+    </tr>
+    <tr>
+      <td>height</td>
+      <td>-</td>
+      <td>Number</td>
+      <td>Y</td>
+      <td>500</td>
+    </tr>
+    <tr>
+      <td>width</td>
+      <td>-</td>
+      <td>Number</td>
+      <td>Y</td>
+      <td>500</td>
+    </tr>
+    <tr>
+      <td>timelyGetRange</td>
+      <td>是否及时的获取用户选择的区域</td>
+      <td>Boolean</td>
+      <td>Y</td>
+      <td>false</td>
+    </tr>
+    <tr>
+      <td>timelyImageData</td>
+      <td>是否及时的返回用户选择的图像区域</td>
+      <td>Boolean</td>
+      <td>Y</td>
+      <td>false</td>
+    </tr>
+    </tbody>
+  </table>
+  <h5><a id="user-content-注意-用户选择的图像区域不能直接使用使用canvas的pitimagedata可以展示" class="anchor" aria-hidden="true" href="#注意-用户选择的图像区域不能直接使用使用canvas的pitimagedata可以展示"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>注意: 用户选择的图像区域不能直接使用，使用canvas的pitImageData可以展示</h5>
+  <h4><a id="user-content-methods" class="anchor" aria-hidden="true" href="#methods"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>methods</h4>
+  <table>
+    <thead>
+    <tr>
+      <th>方法名</th>
+      <th>描述</th>
+      <th>参数</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>rotate</td>
+      <td>旋转canvas上的图片</td>
+      <td>任意整数</td>
+    </tr>
+    <tr>
+      <td>setImgSrc</td>
+      <td>如果使用的是网络图片，那么不同域名的图片最好不要使用</td>
+      <td>imgSrc(任意可以被img标签加载的资源)</td>
+    </tr>
+    <tr>
+      <td>fileClick</td>
+      <td>使用本地图片</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>showMask</td>
+      <td>展开遮罩层，用户选择区域</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>closeMask</td>
+      <td>关闭遮罩层</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>getRange</td>
+      <td>获取用户选择的区域</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>setRange</td>
+      <td>设置用户选框的大小</td>
+      <td>[left,top,width,height]</td>
+    </tr>
+    <tr>
+      <td>getImg</td>
+      <td>获取用户选择的区域</td>
+      <td>type('base64'/'blob'), imgType('image/png' 或者其他任意的web可支持的图片格式),encoderOptions(图片质量默认0.92，可选0.00 - 1.00)</td>
+    </tr>
+    </tbody>
+  </table>
+  <h5><a id="user-content-tips-getimg----imgtype---imagejpeg-可以更好的压缩图片" class="anchor" aria-hidden="true" href="#tips-getimg----imgtype---imagejpeg-可以更好的压缩图片"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>tips: getImg -&gt;  imgType -&gt; 'image/jpeg' 可以更好的压缩图片</h5>
+  <h4><a id="user-content-emit" class="anchor" aria-hidden="true" href="#emit"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>emit</h4>
+  <table>
+    <thead>
+    <tr>
+      <th>emit name</th>
+      <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>imageDataChange</td>
+      <td>如果timelyImageData为true，那么会及时返回用户选择区域的图像，图像是imageData，img不能直接展示</td>
+    </tr>
+    <tr>
+      <td>rangeChange</td>
+      <td>如果timelyGetRange为true,那么会及时返回用户选择的区域</td>
+    </tr>
+    <tr>
+      <td>error</td>
+      <td>错误提示: -1(图片格式错误), -2（图片加载失败）, -3(图片为跨域资源)</td>
+    </tr>
+    </tbody>
+  </table>
+  <h5><a id="user-content-tips-imagedatachange返回的值可以通过-canvas的putimagedata展示" class="anchor" aria-hidden="true" href="#tips-imagedatachange返回的值可以通过-canvas的putimagedata展示"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>tips: imageDataChange返回的值可以通过 canvas的putImageData展示</h5>
+  <h3><a id="user-content-举例-在线例子" class="anchor" aria-hidden="true" href="#举例-在线例子"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>举例 <a href="http://www.bqmyweb.cn/vueshapeimg/" rel="nofollow">在线例子</a></h3>
+  <pre><code>
+ &lt;template&gt;
+   &lt;div id="app"&gt;
+     &lt;div style="width: 500px;"&gt;
+       &lt;button @click="$refs.vueShapeImg2.fileClick()"&gt;localImg&lt;/button&gt;
+       &lt;button @click="$refs.vueShapeImg2.setImgSrc('http://www.bqmyweb.cn/vueshapeimg/demo.png')"&gt;networkImg&lt;/button&gt;
+       &lt;button @click="$refs.vueShapeImg2.showMask()"&gt;startCrop&lt;/button&gt;
+       &lt;button @click="$refs.vueShapeImg2.closeMask()"&gt;endCrop&lt;/button&gt;
+       &lt;button @click="getImg2"&gt;getImg&lt;/button&gt;
+       &lt;button @click="$refs.vueShapeImg2.setRange([200,200,200,200])"&gt;setRange&lt;/button&gt;
+       &lt;button @click="$refs.vueShapeImg2.rotate(10)"&gt;rotate10&lt;/button&gt;
+       &lt;button @click="$refs.vueShapeImg2.rotate(-10)"&gt;rotate-10&lt;/button&gt;
+       &lt;p style="font-size: 18px;font-weight: bold;"&gt;useFrame:true&lt;/p&gt;
+       &lt;vueShapeImg @error="imgError" :height="400" :width="400" :useFrame="true" :timelyImageData="true" @imageDataChange="putImg2" ref="vueShapeImg2"&gt;&lt;/vueShapeImg&gt;
+       &lt;canvas id="canvas2"&gt;&lt;/canvas&gt;
+     &lt;/div&gt;
+   &lt;/div&gt;
+ &lt;/template&gt;
+
+ &lt;script&gt;
+ export default {
+   name: 'app',
+   data () {
+     return {
+       canvas2: null,
+       canvas2Ctx: null
+     }
+   },
+   mounted () {
+     this.canvas2 = document.getElementById('canvas2')
+     this.canvas2Ctx = this.canvas2.getContext('2d')
+   },
+   methods: {
+     putImg2 (imgData) {
+       this.canvas2Ctx.clearRect(0, 0, 500, 500)
+       let obj = this.$refs.vueShapeImg2.getRange()
+       this.canvas2.width = obj.w
+       this.canvas2.height = obj.h
+       this.canvas2Ctx.putImageData(imgData, 0, 0)
+     },
+     getImg2 () {
+       console.log(this.$refs.vueShapeImg2.getImg('base64', 'image/jpeg', 0.7))
+     },
+     imgError (error) {
+       console.error(error)
+     },
+   }
+ }
+ &lt;/script&gt;
+
+</code></pre>
+  <h3><a id="user-content-浏览器支持情况" class="anchor" aria-hidden="true" href="#浏览器支持情况"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>浏览器支持情况</h3>
+  <h4><a id="user-content-ie10-chrome-firefox-和其他现代浏览器" class="anchor" aria-hidden="true" href="#ie10-chrome-firefox-和其他现代浏览器"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>IE10+, chrome, firefox 和其他现代浏览器</h4>
+  <h3><a id="user-content-升级的内容" class="anchor" aria-hidden="true" href="#升级的内容"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>升级的内容</h3>
+  <h4><a id="user-content-141-2019-5-24-094100" class="anchor" aria-hidden="true" href="#141-2019-5-24-094100"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1.4.1 (2019-5-24 09:41:00)</h4>
+  <p>修复了在ie浏览器，框架模式下 移动图片时在裁剪框上触发mouseup事件时，再次拖拽图片会触发拖拽整个canvas的问题。</p>
+  <h4><a id="user-content-1342019-5-15-151751" class="anchor" aria-hidden="true" href="#1342019-5-15-151751"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1.3.4（2019-5-15 15:17:51）</h4>
+  <p>限制了setRange 函数的输入参数范围</p>
+  <h4><a id="user-content-1322019-5-15-112355" class="anchor" aria-hidden="true" href="#1322019-5-15-112355"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1.3.2（2019-5-15 11:23:55）</h4>
+  <p>修复框架模式下图片移动后调用旋转函数图片返回画布中心的问题</p>
+  <h4><a id="user-content-1312019-5-15-104735" class="anchor" aria-hidden="true" href="#1312019-5-15-104735"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1.3.1（2019-5-15 10:47:35）</h4>
+  <p>添加了图片旋转功能</p>
+  <h4><a id="user-content-1302019-5-13-172510" class="anchor" aria-hidden="true" href="#1302019-5-13-172510"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1.3.0（2019-5-13 17:25:10）</h4>
+  <p>修复在同一页面中使用多个vueShapeImg导致onmouseup污染，裁剪框一直存在的问题</p>
+  <p>修复在普通模式下使用跨域图片进行裁剪时多次报错的问题</p>
+  <p><a href="https://github.com/ArchieHurry/vueShapeImg/blob/master/version.md">更多版本信息</a></p>
+</article>
+</body>
+</html>
