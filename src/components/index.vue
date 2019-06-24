@@ -330,6 +330,9 @@ export default {
       s.maskObj.ondragstart = function() { // 解决ie useFrame移动图片时在裁剪框上出触发mouseup,再次移动拖会出现拖拽遮罩层的问题
         return false;
       };
+      s.center.ondragstart = function() { // 解决裁剪框缩放时存在拖拽的问题
+        return false;
+      };
       window.addEventListener("mouseup", function () { // 修复在同一页面中使用多个vueShapeImg导致onmouseup污染，裁剪框一直存在的问题
         s.canvasObj.onmousemove = null;
         s.maskObj.onmousemove = null;
