@@ -415,14 +415,6 @@ export default {
         if (!timer) {
           px = e.screenX - ox;
           py = e.screenY - oy;
-          if (s.aspectRatio) {
-            if (s._oneOf(['bottomRight', 'bottom', 'top', 'topRight'], CN)) {
-               px = aspect * py;
-            }
-            if (s._oneOf(['right', 'left', 'bottomLeft', 'topLeft'], CN)) {
-              py = px / aspect;
-            }
-          }
           if (rx + rw > s.width || ry + rh > s.height) {
             timer = null;
             return;
