@@ -73,6 +73,10 @@ export default {
         const s = this;
         return [s.width * 0.25, s.height * 0.25, s.width * 0.5 ,s.height * 0.5];
       }
+    },
+    aspectRatio: {
+      type: Boolean,
+      default: false
     }
   },
   created () {
@@ -272,6 +276,9 @@ export default {
         };
       };
       if (s.useFrame) { // 框架模式，遮罩层上移动图片
+        s.center.ondragstart = function() { // 解决裁剪框缩放时存在拖拽的问题
+          return false;
+        };
         s.maskObj.onmousedown = function (e) {
           let timer = null,cx = e.screenX,cy = e.screenY, lx = 0, ly = 0;
           s.vueShapeImgDiv.onmousemove = function (e) {
@@ -330,9 +337,6 @@ export default {
       s.maskObj.ondragstart = function() { // 解决ie useFrame移动图片时在裁剪框上出触发mouseup,再次移动拖会出现拖拽遮罩层的问题
         return false;
       };
-      s.center.ondragstart = function() { // 解决裁剪框缩放时存在拖拽的问题
-        return false;
-      };
       window.addEventListener("mouseup", function () { // 修复在同一页面中使用多个vueShapeImg导致onmouseup污染，裁剪框一直存在的问题
         s.canvasObj.onmousemove = null;
         s.maskObj.onmousemove = null;
@@ -341,6 +345,14 @@ export default {
           s.vueShapeImgDiv.onmousemove = null;
         }
       }, false);
+    },
+    _oneOf (arr, el) {
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === el) {
+          return true;
+        }
+      }
+      return  false;
     },
     // 绘制遮罩层
     _drawMask (x, y, w, h) {
@@ -398,10 +410,19 @@ export default {
       w = parseInt(s.center.style.width);
       h = parseInt(s.center.style.height);
       let  rx = x, ry = y, rw = w, rh = h;
+      const aspect = w / h;
       s.vueShapeImgDiv.onmousemove = function (e) {
         if (!timer) {
           px = e.screenX - ox;
           py = e.screenY - oy;
+          if (s.aspectRatio) {
+            if (s._oneOf(['bottomRight', 'bottom', 'top', 'topRight'], CN)) {
+               px = aspect * py;
+            }
+            if (s._oneOf(['right', 'left', 'bottomLeft', 'topLeft'], CN)) {
+              py = px / aspect;
+            }
+          }
           if (rx + rw > s.width || ry + rh > s.height) {
             timer = null;
             return;

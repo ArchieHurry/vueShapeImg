@@ -22,7 +22,8 @@
       <button @click="$refs.vueShapeImg2.rotate(10)">rotate10</button>
       <button @click="$refs.vueShapeImg2.rotate(-10)">rotate-10</button>
       <p style="font-size: 18px;font-weight: bold;">useFrame:true</p>
-      <vueShapeImg @error="imgError" :height="400" :width="400" :useFrame="true" :timelyImageData="true" @imageDataChange="putImg2" ref="vueShapeImg2"></vueShapeImg>
+      <vueShapeImg @error="imgError" :height="400" :width="400" :useFrame="true" :timelyImageData="true" :aspectRatio="true"
+                   @imageDataChange="putImg2" ref="vueShapeImg2"></vueShapeImg>
       <canvas style="margin-left: 50px" id="canvas2"></canvas>
     </div>
     <div style="clear: both"></div>
