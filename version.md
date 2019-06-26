@@ -1,3 +1,9 @@
+#### 1.3.1 (2019-5-15 10:47:35)
+
+Adding image rotate function
+
+添加了图片旋转功能
+
 #### 1.3.0 (2019-5-13 17:25:10)
 
 Fixed the problem of onmouseup pollute caused by using multiple vueShapeImg on the same page and clipping box always exist

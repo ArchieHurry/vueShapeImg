@@ -38,6 +38,8 @@ Vue.use(vueShapeImg)
 |width|-|Number|Y|500|
 |timelyGetRange|Timely get user's select range|Boolean|Y|false|
 |timelyImageData|Timely converting pictures that capture the user's range of choice into imageData|Boolean|Y|false|
+|aspectRatio|Keeping aspect ratio scaling clipping frame|Boolean|Y|false|
+|disableResize|Forbidding scaling clipping frame|Boolean|Y|false|
 
 ##### tips: You can't use imageData directly,show it in canvas putImageData 
 
@@ -125,6 +127,10 @@ Vue.use(vueShapeImg)
 
 ### Upgraded content
 
+### 1.4.5 (2019-6-26 15:16:00)
+
+Added the function of keeping aspect ratio scaling clipping frame and forbidding scaling clipping frame.
+
 #### 1.4.3 (2019-6-24 17:30:44)
 
 Repairing drag problem in clipping frame zooming
@@ -140,9 +146,5 @@ Limit the range of input parameters of setRange function
 #### 1.3.2 (2019-5-15 11:23:55)
 
 Fixed the problem of calling the rotate function picture to return to the center of the canvas after moving the picture in frame mode
-
-#### 1.3.1 (2019-5-15 10:47:35)
-
-Adding image rotate function
 
 [more version info](https://github.com/ArchieHurry/vueShapeImg/blob/master/version.md)

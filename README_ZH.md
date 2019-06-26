@@ -29,6 +29,8 @@ Vue.use(vueShapeImg)
 |width|-|Number|Y|500|
 |timelyGetRange|是否及时的获取用户选择的区域|Boolean|Y|false|
 |timelyImageData|是否及时的返回用户选择的图像区域|Boolean|Y|false|
+|aspectRatio|保持横纵比进行缩放裁剪框|Boolean|Y|false|
+|disableResize|禁止缩放裁剪框|Boolean|Y|false|
 
 ##### 注意: 用户选择的图像区域不能直接使用，使用canvas的pitImageData可以展示 
 
@@ -117,6 +119,10 @@ Vue.use(vueShapeImg)
 
 ### 升级的内容
 
+### 1.4.5 (2019-6-26 15:16:00)
+
+新增等比缩放和禁止缩放裁剪框功能
+
 #### 1.4.3 (2019-6-24 17:30:44)
 
 修复裁剪框缩放时存在拖拽的问题
@@ -132,9 +138,5 @@ Vue.use(vueShapeImg)
 #### 1.3.2（2019-5-15 11:23:55）
 
 修复框架模式下图片移动后调用旋转函数图片返回画布中心的问题
-
-#### 1.3.1（2019-5-15 10:47:35）
-
-添加了图片旋转功能
 
 [更多版本信息](https://github.com/ArchieHurry/vueShapeImg/blob/master/version.md)

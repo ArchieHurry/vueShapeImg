@@ -8,7 +8,7 @@
     "vueShapeImg",
     "picture-editor"
   ],
-  "version": "1.4.4",
+  "version": "1.4.5",
   "author": "archiehurry <534995272@qq.com>",
   "main": "./dist/vue-shape-img.js",
   "license": "MIT",
