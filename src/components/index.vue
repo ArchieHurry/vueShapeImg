@@ -1,7 +1,7 @@
 <template>
   <div :id="`cropper${timeId}`">
     <div class="vueShapeImg" :id="`vueShapeImg${timeId}`" :style="{ height: height + 'px', width: width + 'px' }">
-      <div  v-show="mask" v-if="useFrame" class="center">
+      <div  v-show="mask" v-if="useFrame" class="center" :class="{ cursorDefault: disableResize }">
         <div class="top" ></div>
         <div class="right" ></div>
         <div class="bottom" ></div>
@@ -75,6 +75,10 @@ export default {
       }
     },
     aspectRatio: {
+      type: Boolean,
+      default: false
+    },
+    disableResize: {
       type: Boolean,
       default: false
     }
@@ -204,7 +208,7 @@ export default {
         s.showMask();
         s.center.onmousedown = function(e) {
           // 如果是边框触发，缩放效果
-          if (e.target.className !== "center") {
+          if (e.target.className.indexOf("center") === -1) {
             s._zoomFrame(e);
             return;
           }
@@ -403,6 +407,9 @@ export default {
     // 框架缩放
     _zoomFrame (e) {
       const s = this;
+      if (s.disableResize) {
+        return;
+      }
       const CN = e.target.className;
       let ox = e.screenX, oy = e.screenY, timer = null,x = 0, y = 0, w = 0, h = 0,px =0, py = 0;
       x = parseInt(s.center.style.left);
@@ -415,26 +422,38 @@ export default {
         if (!timer) {
           px = e.screenX - ox;
           py = e.screenY - oy;
-          if (rx + rw > s.width || ry + rh > s.height) {
-            timer = null;
-            return;
-          }
           timer = setTimeout(function () {
             switch (CN) {
               case "top": ry = y + py; rh = h - py; break;
               case "bottom": rh = h + py; break;
               case "left": rx = x + px; rw = w - px; break;
               case "right": rw = w + px; break;
-              case "topLeft": rx = x + px; ry = y + py; rw = w - px; rh = h -py; break;
+              case "topLeft": rx = x + px; ry = y + py; rw = w - px; rh = h - py; break;
               case "topRight": ry = y + py; rw = w + px; rh = h - py; break;
               case "bottomLeft": rx = x + px; rw = w - px; rh = h + py;  break;
               case "bottomRight": rw = w + px; rh = h + py;  break;
+            }
+            if (s.aspectRatio) {
+              if ("topLeft" === CN) {
+                rx = x + py * aspect;
+                rw = rh * aspect;
+              }
+              if (s._oneOf(["bottomRight", "bottom", "top", "topRight"], CN)) {
+                rw = aspect * rh;
+              }
+              if (s._oneOf(["right", "left", "bottomLeft"], CN)) {
+                rh = rw / aspect;
+              }
             }
             if (rx < 0) {
               rx = 0;
             }
             if (ry < 0) {
               rx = 0;
+            }
+            if (rx + rw > s.width || ry + rh > s.height) {
+              timer = null;
+              return;
             }
             s._drawMask(rx, ry, rw, rh);
             timer = null;
@@ -483,6 +502,11 @@ export default {
     }
     .canvas{
       border: 1px solid rgba(79, 72, 65, 0.35);
+    }
+    .cursorDefault {
+      div{
+        cursor: default !important;
+      }
     }
     .center{
       position: absolute;

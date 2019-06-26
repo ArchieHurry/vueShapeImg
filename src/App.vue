@@ -18,12 +18,12 @@
       <button @click="$refs.vueShapeImg2.showMask()">startCrop</button>
       <button @click="$refs.vueShapeImg2.closeMask()">endCrop</button>
       <button @click="getImg2">getImg</button>
-      <button @click="$refs.vueShapeImg2.setRange([200,200,200,200])">setRange</button>
+      <button @click="$refs.vueShapeImg2.setRange([100,100,200,100])">setRange</button>
       <button @click="$refs.vueShapeImg2.rotate(10)">rotate10</button>
       <button @click="$refs.vueShapeImg2.rotate(-10)">rotate-10</button>
       <p style="font-size: 18px;font-weight: bold;">useFrame:true</p>
       <vueShapeImg @error="imgError" :height="400" :width="400" :useFrame="true" :timelyImageData="true" :aspectRatio="true"
-                   @imageDataChange="putImg2" ref="vueShapeImg2"></vueShapeImg>
+                   @imageDataChange="putImg2" :disableResize="false" ref="vueShapeImg2"></vueShapeImg>
       <canvas style="margin-left: 50px" id="canvas2"></canvas>
     </div>
     <div style="clear: both"></div>
