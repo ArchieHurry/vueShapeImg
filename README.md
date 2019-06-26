@@ -127,7 +127,7 @@ Vue.use(vueShapeImg)
 
 ### Upgraded content
 
-### 1.4.5 (2019-6-26 15:16:00)
+#### 1.4.5 (2019-6-26 15:16:00)
 
 Added the function of keeping aspect ratio scaling clipping frame and forbidding scaling clipping frame.
 
